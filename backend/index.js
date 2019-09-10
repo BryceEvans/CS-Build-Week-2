@@ -78,7 +78,7 @@ async function move() {
       Authorization: `Token ${params.TOKEN}`
     },
     body: {
-      direction: 'n'
+      direction: 's'
     }
   };
   await axios({
@@ -192,15 +192,11 @@ async function status() {
     url: statusUrl,
     headers: {
       Authorization: `Token ${params.TOKEN}`
-    },
-    body: {
-      name: 'treasure'
     }
   };
   await axios({
     method: config.method,
     url: statusUrl,
-    data: config.body,
     headers: config.headers
   })
     .then(res => {
