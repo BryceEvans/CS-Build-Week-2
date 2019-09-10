@@ -29,7 +29,7 @@ const moveUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/move/';
 const takeUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/take/';
 const dropUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/';
 const sellUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/';
-// const statusUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/status/';
+const statusUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/status/';
 const examineUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/';
 // const wearUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/wear/';
 // const changeNameUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/';
@@ -44,9 +44,9 @@ const examineUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/'
 // const transmorgrifyUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/transmogrify/';
 const params = {
   // // K-token
-  // TOKEN: '65ef3fd1d9226f97f50a440cb4dd09b64e0d6a8c'
+  TOKEN: '65ef3fd1d9226f97f50a440cb4dd09b64e0d6a8c'
   // // B-token
-  TOKEN: '75578be1cf6136d88fb6b170e43b7da71dea5f84'
+  // TOKEN: '75578be1cf6136d88fb6b170e43b7da71dea5f84'
 };
 
 async function getRoom() {
@@ -186,7 +186,28 @@ async function confirmSell() {
     .catch(err => console.log(err));
 }
 
-// status function here
+async function status() {
+  const config = {
+    method: 'post',
+    url: statusUrl,
+    headers: {
+      Authorization: `Token ${params.TOKEN}`
+    },
+    body: {
+      name: 'treasure'
+    }
+  };
+  await axios({
+    method: config.method,
+    url: statusUrl,
+    data: config.body,
+    headers: config.headers
+  })
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch(err => console.log(err));
+}
 
 async function examine() {
   const config = {
