@@ -17,6 +17,15 @@ class Room {
   }
 }
 
+class MapNode {
+  constructor(room_id, coordinates, exits) {
+    (this.room_id = room_id),
+      (this.coordinates = coordinates),
+      (this.exits = exits);
+  }
+}
+
+let map = {};
 var stack = [];
 
 server.use(express.json(), cors());
@@ -46,11 +55,14 @@ async function getRoom() {
     res.data.exits,
     res.data.cooldown
   );
+  setTimeout(cooldown => {
+    console.log('Cooldown');
+  }, res.data.cooldown * 1000);
   stack.push(room);
   console.log(room);
 }
 
-async function move() {
+async function move(direction) {
   const config = {
     method: 'post',
     url: moveUrl,
@@ -58,7 +70,7 @@ async function move() {
       Authorization: `Token ${params.TOKEN}`
     },
     body: {
-      direction: 'n'
+      direction: direction
     }
   };
   await axios({
@@ -69,11 +81,15 @@ async function move() {
   })
     .then(res => {
       console.log(res.data);
+      map[res.data.room_id] = res.data.coordinates;
+      console.log(map);
+      setTimeout(cooldown => {
+        console.log('Cooldown: ', res.data.cooldown);
+      }, res.data.cooldown * 1000);
     })
     .catch(err => console.log(err));
 }
 
-//getRoom();
 move();
 
 server.listen(PORT, () => {
