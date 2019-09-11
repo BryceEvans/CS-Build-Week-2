@@ -55,54 +55,12 @@ const params = {
   // B-token
   TOKEN: '75578be1cf6136d88fb6b170e43b7da71dea5f84'
 };
+
 let map = {};
 var stack = [];
 var prevRoom = 0;
 var coolDown = 1;
 let currentRoom = null;
-
-let inverseDirections = { 'n': "s", 's': 'n', 'e': 'w', 'w': 'e' }
-let traversalPath = []
-let rooms = {}
-let reversePath = []
-let roomsDict = {}
-
-//rooms[0] is a key that sets a value
- async () => {
-  rooms[0] = await getRoom()
- }
- async () => {
-  roomsDict[0] = await getRoom()
- }
-
-
-while (Object.keys(rooms).length < 500 ) {
-  
-  let x =  getRoom();
-  console.log("RUNNING WHILE LOOP")
-  if (!(x.room_id in rooms)) {
-    rooms[x.room_id] = x
-    roomsDict[x.room_id] = x
-    let lastDirection = reversePath[-1]
-    delete roomsDict[x.room_id].lastDirection
-  }
-  while (roomsDict[x.room_id].length < 1) {
-    let reverse = reversePath.pop()
-    traversalPath.push(reverse)
-    move(reverse)
-  }
-  
-  let exitDirection = Object.keys(roomsDict[x.room_id]).shift()
-  traversalPath.push(exitDirection)
-  reversePath.push(inverseDirections[exitDirection])
-  move(exitDirection)
-  
-  //not sure if needed
-  if(500 - rooms.length === 1) {
-    rooms[x.room_id] = x.room_id.getRoom()
-  }
-}
-
 
 async function getRoom() {
   let timeOut = 1;
@@ -128,7 +86,7 @@ async function getRoom() {
         console.log('Map in getRoom', map);
       }
       currentRoom = res.data.room_id;
-      console.log("Current Room: ", currentRoom);
+      console.log(currentRoom);
       const room = new Room(
         res.data.room_id,
         res.data.title,
@@ -142,7 +100,6 @@ async function getRoom() {
     })
     .catch(err => console.log(err));
 }
-
 // MOVE function that takes in a direction then pushes map information into map variable.
 async function move(moveDirection) {
   let oppositeDirection = { n: 's', s: 'n', e: 'w', w: 'e' };
@@ -323,7 +280,7 @@ async function examine() {
 // ALGORITHM
 
 getRoom();
-// move('n');
+move('n');
 console.log('current room ', currentRoom);
 console.log('map at current room', map[currentRoom]);
 // while(map.length < 500){
@@ -335,9 +292,11 @@ console.log('map', map);
 
 // }
 
+
+
 // getRoom();
-// //move();
-// //move('n');
+// move();
+// move('n');
 // move('s');
 // move('s')
 
