@@ -55,6 +55,15 @@ const params = {
   // B-token
   TOKEN: '75578be1cf6136d88fb6b170e43b7da71dea5f84'
 };
+
+function wait(ms){
+  var start = new Date().getTime();
+  var end = start;
+  while(end < start + ms) {
+    end = new Date().getTime();
+ }
+}
+
 let map = {};
 var stack = [];
 var prevRoom = 0;
@@ -67,68 +76,17 @@ let rooms = {}
 let reversePath = []
 let roomsDict = {}
 
-//rooms[0] is a key that sets a value
- async () => {
-  rooms[0] = await getRoom()
- }
- async () => {
-  roomsDict[0] = await getRoom()
- }
-
-
-while (Object.keys(rooms).length < 500 ) {
-  
-  let x =  getRoom();
-  console.log("RUNNING WHILE LOOP")
-  if (!(x.room_id in rooms)) {
-    rooms[x.room_id] = x
-    roomsDict[x.room_id] = x
-    let lastDirection = reversePath[-1]
-    delete roomsDict[x.room_id].lastDirection
-  }
-  while (roomsDict[x.room_id].length < 1) {
-    let reverse = reversePath.pop()
-    traversalPath.push(reverse)
-    move(reverse)
-  }
-  
-  let exitDirection = Object.keys(roomsDict[x.room_id]).shift()
-  traversalPath.push(exitDirection)
-  reversePath.push(inverseDirections[exitDirection])
-  move(exitDirection)
-  
-  //not sure if needed
-  if(500 - rooms.length === 1) {
-    rooms[x.room_id] = x.room_id.getRoom()
-  }
-}
-
-
-async function getRoom() {
-  let timeOut = 1;
+async function getData() {
   const config = {
-    method: 'get',
-    url: getUrl,
-    headers: {
-      Authorization: `Token ${params.TOKEN}`
-    }
-  };
-  await axios(config)
-    .then(res => {
-      prevRoom = res.data.room_id;
-      if (!map[res.data.room_id]) {
-        let exits = {};
-        res.data.exits.map(exit => {
-          exits[exit] = '?';
-        });
-        let coords = res.data.coordinates;
-        let info = [];
-        info.push(coords, exits);
-        map[res.data.room_id] = info;
-        console.log('Map in getRoom', map);
+      method: 'get',
+      url: getUrl,
+      headers: {
+        Authorization: `Token ${params.TOKEN}`
       }
-      currentRoom = res.data.room_id;
-      console.log("Current Room: ", currentRoom);
+  }
+  wait(11000)
+  let getRoomData = await Promise.resolve(axios(config)
+    .then(res => {
       const room = new Room(
         res.data.room_id,
         res.data.title,
@@ -136,12 +94,106 @@ async function getRoom() {
         res.data.items,
         res.data.exits,
         res.data.cooldown
-      );
-      timeOut = res.data.cooldown;
-      stack.push(room);
+      ) 
+      return room 
     })
-    .catch(err => console.log(err));
+    )
+    return getRoomData
+    // .catch(err => console.log(err));
 }
+
+
+
+
+
+function doWhile(roomData) {
+  while (Object.keys(rooms).length < 500 ) {
+    // let x = await setTimeout(getData(), (11 * 1000))
+    
+    let x = roomData
+    
+    console.log("X: \n", x)
+    console.log("RUNNING WHILE LOOP")
+    if (!(x.room_id in rooms)) {
+      rooms[x.room_id] = x
+      roomsDict[x.room_id] = x
+      let lastDirection = reversePath[-1]
+      delete roomsDict[x.room_id].lastDirection
+    }
+    while (roomsDict[x.room_id].length < 1) {
+      let reverse = reversePath.pop()
+      traversalPath.push(reverse)
+      move(reverse)
+    }
+    
+    let exitDirection = Object.keys(roomsDict[x.room_id]).shift()
+    traversalPath.push(exitDirection)
+    reversePath.push(inverseDirections[exitDirection])
+    move(exitDirection)
+    
+    //not sure if needed
+    // if(500 - rooms.length === 1) {
+      //     rooms[x.room_id] = x.room_id.getRoom()
+      //   }
+      
+    }
+    
+}
+      (async () => {
+        let roomData = await getData().then(data => { return data })
+        roomsDict[roomData.room_id] = roomData
+        rooms[roomData.room_id] = roomData
+        console.log("THIS IS getRoomData:", roomsDict[roomData.room_id])
+        doWhile(roomData)
+      })()
+        
+
+// async function getRoom() {
+//   let timeOut = 1;
+//   const config = {
+//       method: 'get',
+//       url: getUrl,
+//       headers: {
+//         Authorization: `Token ${params.TOKEN}`
+//       }
+//   }
+//   await axios(config)
+//     .then(res => {
+//       prevRoom = res.data.room_id;
+//       if (!map[res.data.room_id]) {
+//         let exits = {};
+//         res.data.exits.map(exit => {
+//           exits[exit] = '?';
+//         });
+//         let coords = res.data.coordinates;
+//         let info = [];
+//         info.push(coords, exits);
+//         map[res.data.room_id] = info;
+//         // console.log('Map in getRoom', map);
+//       }
+//       currentRoom = res.data.room_id;
+//       // console.log("Current Room: ", currentRoom);
+//       const room = new Room(
+//         res.data.room_id,
+//         res.data.title,
+//         res.data.coordinates,
+//         res.data.items,
+//         res.data.exits,
+//         res.data.cooldown
+//       );
+//       timeOut = res.data.cooldown;
+//       stack.push(room);
+//       return room
+//     })
+//     .catch(err => console.log(err));
+// }
+
+// (async () => {
+//   let q = await getRoom().then(data => { return data })
+//   console.log("ROOMDICT", q)
+//  })()
+
+
 
 // MOVE function that takes in a direction then pushes map information into map variable.
 async function move(moveDirection) {
@@ -322,16 +374,16 @@ async function examine() {
 
 // ALGORITHM
 
-getRoom();
-// move('n');
-console.log('current room ', currentRoom);
-console.log('map at current room', map[currentRoom]);
-// while(map.length < 500){
-if (map[currentRoom]) {
-  console.log('working');
+// getRoom();
+// // move('n');
+// console.log('current room ', currentRoom);
+// console.log('map at current room', map[currentRoom]);
+// // while(map.length < 500){
+// if (map[currentRoom]) {
+//   console.log('working');
   // for (exit in map[currentRoom][1]) console.log('Exits in current room', exit);
-}
-console.log('map', map);
+// }
+// console.log('map', map);
 
 // }
 
