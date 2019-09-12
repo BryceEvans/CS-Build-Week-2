@@ -5,6 +5,8 @@ create table "map"
 "description" text, 
 "coordinates" integer ARRAY,
 "exits" jsonb not null,
+"players" text ARRAY,
+"items" text ARRAY,
 "elevation" integer,
 "terrain" text,
 "cooldown" real,

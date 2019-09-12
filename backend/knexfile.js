@@ -4,8 +4,17 @@ module.exports = {
 
   development: {
     client: "pg",
-    connection: 'postgres://localhost/island'
+    connection: 'postgres://localhost/island',
+    migrations: {
+      tableName: "knex_migrations",
+      directory: "./migrations"
+    },
+    seeds: {
+      directory: "./seeds"
+    }
   },
+
+
 
   staging: {
     client: 'postgresql',
