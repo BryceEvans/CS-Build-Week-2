@@ -129,9 +129,14 @@ class Island extends Component {
 
   let dom;
     p.setup = () => {
+      p.loadJSON('https://lambda-treasure-hunt.herokuapp.com/api/adv/init/', getInit)
       canvas = p.createCanvas(1500, 2000);
       p.noStroke();
       dom = p.select('.hello')
+    }
+
+    function getInit(data) {
+      console.log("data" , data)
     }
 
     p.draw = () => {
