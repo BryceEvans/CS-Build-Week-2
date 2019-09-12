@@ -1,7 +1,5 @@
-
-exports.up = function(knex) {
-    return knex.schema.createTable('players', function(table) {
-
+exports.up = function (knex) {
+    return knex.schema.createTable('map', function (table) {
         table.increments();
         table
             .integer('room_id');
@@ -26,6 +24,6 @@ exports.up = function(knex) {
     });
 }
 
-exports.down = function(knex, Promise) {
+exports.down = function (knex, Promise) {
     return knex.schema.dropTableIfExists("map");
-  };
+};
