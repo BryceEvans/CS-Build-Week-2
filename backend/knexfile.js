@@ -6,7 +6,7 @@ module.exports = {
     client: "pg",
     connection: 'postgres://localhost/island',
     migrations: {
-      tableName: "knex_migrations",
+      tableName: "island",
       directory: "./migrations"
     },
     seeds: {

@@ -1,8 +1,11 @@
 const express = require('express');
 const server = express();
-// const db = require('./data/dbHelpers');
+const bodyParser = require('body-parser')
+
+const db = require('./dbConfig');
 const cors = require('cors');
 const axios = require('axios');
+const {Client} = require('pg')
 
 // -------- Pseudo DB until static db is created ----------
 
@@ -237,7 +240,79 @@ getRoom();
 // status();
 // examine();
 
+server.get('/players', (req,res) => {
+  db.select().from('players').then((players) => {
+    res.send(players)
+  })
+})
 
+server.get('/players/:playerID', (req,res) => {
+  db.select()
+  .from('players')
+  .where("playerID", req.params.playerID)
+  .then((players) => {
+    res.send(players)
+  })
+})
+
+server.get('/map', (req,res) => {
+  db.select().from('map').then((map) => {
+    res.send(map)
+  })
+})
+
+server.get('/map:room_id', (req,res) => {
+  db.select()
+  .from('map')
+  .where("room_id", req.params.room_id).then((map) => {
+    res.send(map)
+  })
+})
+
+server.post('/players', (req,res) => {
+  db('players').insert(req.body)
+  .then(() => {
+    db.select().from('players').then((players) => {
+      res.send(players)
+    })
+  })
+})
+
+server.post('/map', (req,res) => {
+  db('players').insert(req.body)
+  .then(() => {
+    db.select().from('map').then((players) => {
+      res.send(map)
+    })
+  })
+})
+
+server.put('/players/update/:playerID', (req,res) => {
+  db.select()
+  .from('players')
+  .where("playerID", req.params.playerID)
+  .update(req.body)
+  .then((players) => {
+    db.select()
+    .from('players')
+    .where("playerID", req.params.playerID)
+    .then((players) => {
+      res.send(players)
+    })  })
+})
+
+server.put('/map/update/:room_id', (req,res) => {
+  db.select()
+  .from('map')
+  .where("room_id", req.params.room_id)
+  .update(req.body)
+  .then((map) => {
+    db.select()
+    .from('map')
+    .where("room_id", req.params.room_id).then((map) => {
+      res.send(map)
+    })  })
+})
 
 
 server.listen(PORT, () => {
