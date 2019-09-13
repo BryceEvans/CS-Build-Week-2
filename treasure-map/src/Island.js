@@ -19,6 +19,9 @@ import "p5/lib/addons/p5.sound";
 //     "messages": []
 //   }
 
+
+
+
 class Room {
     constructor(room_id, title, description, coordinates, players, items, exits, cooldown, errors, messages  ) {
       this.room_id = room_id;
@@ -33,6 +36,28 @@ class Room {
       this.messages = messages;
     }
   }
+
+class Player {
+  constructor(playerID, name, cooldown, encumbrance, strength, speed, wearing, gold, mining, currentRoom, inventory, status, errors, messages  ) {
+  
+    this.playerID = playerID
+    this.name = name;
+    this.cooldown = cooldown;
+    this.encumbrance = encumbrance;
+    this.strength = strength; 
+    this.speed = speed;
+    this.wearing = wearing;
+    this.gold = gold;
+    this.mining = mining;
+    this.currentRoom = currentRoom
+    this.inventory = inventory;
+    this.status = status;
+    this.errors = errors;
+    this.messages = messages;
+}
+}
+
+let player1 = new Player("75578be1cf6136d88fb6b170e43b7da71dea5f84", "player188", 5.0, 7, 10, 4, [], 4444, false, 0, '', [], [], [], [])
 
 const islandMap = [];
 const roomGraph={494: [[1, 8], {'e': 457}], 492: [[1, 20], {'e': 400}], 493: [[2, 5], {'e': 478}], 457: [[2, 8], {'e': 355, 'w': 494}], 484: [[2, 9], {'n': 482}], 482: [[2, 10], {'s': 484, 'e': 404}], 486: [[2, 13], {'e': 462}], 479: [[2, 15], {'e': 418}], 465: [[2, 16], {'e': 368}], 414: [[2, 19], {'e': 365}], 400: [[2, 20], {'e': 399, 'w': 492}], 451: [[2, 21], {'e': 429}], 452: [[2, 22], {'e': 428}], 478: [[3, 5], {'e': 413, 'w': 493}], 393: [[3, 6], {'e': 375}], 437: [[3, 7], {'e': 347}], 355: [[3, 8], {'e': 312, 'w': 457}], 433: [[3, 9], {'e': 372}], 404: [[3, 10], {'n': 339, 'w': 482}], 339: [[3, 11], {'s': 404, 'e': 314}], 367: [[3, 12], {'n': 462, 'e': 344}], 462: [[3, 13], {'s': 367, 'w': 486}], 463: [[3, 14], {'e': 458, 'n': 418}], 418: [[3, 15], {'e': 349, 'w': 479}], 368: [[3, 16], {'n': 436, 'e': 284, 'w': 465}], 436: [[3, 17], {'s': 368}], 447: [[3, 18], {'n': 365}], 365: [[3, 19], {'s': 447, 'e': 333, 'w': 414}], 399: [[3, 20], {'e': 358, 'w': 400}], 429: [[3, 21], {'n': 428, 'w': 451}], 428: [[3, 22], {'s': 429, 'e': 411, 'w': 452}], 419: [[4, 4], {'n': 413}], 413: [[4, 5], {'n': 375, 's': 419, 'w': 478}], 375: [[4, 6], {'n': 347, 's': 413, 'w': 393}], 347: [[4, 7], {'n': 312, 's': 375, 'w': 437}], 312: [[4, 8], {'s': 347, 'e': 299, 'w': 355}], 372: [[4, 9], {'e': 263, 'w': 433}], 258: [[4, 10], {'e': 236}], 314: [[4, 11], {'e': 220, 'w': 339}], 344: [[4, 12], {'n': 359, 'e': 230, 'w': 367}], 359: [[4, 13], {'n': 458, 's': 344}], 458: [[4, 14], {'s': 359, 'w': 463}], 349: [[4, 15], {'n': 284, 'w': 418}], 284: [[4, 16], {'n': 470, 's': 349, 'e': 254, 'w': 368}], 470: [[4, 17], {'s': 284}], 301: [[4, 18], {'e': 187}], 333: [[4, 19], {'n': 358, 'e': 303, 'w': 365}], 358: [[4, 20], {'n': 397, 's': 333, 'w': 399}], 397: [[4, 21], {'s': 358}],
@@ -53,9 +78,9 @@ for (let c in roomGraph) {
     islandMap.push(room)
 }
 
+islandMap[4].title = "Shop"
 
-
-let start = islandMap.filter(loc => loc.room_id === "7")
+let start = islandMap.filter(loc => loc.room_id === "0")
 
 let previousRoom = ''
 let currentRoom = start[0]
@@ -67,7 +92,7 @@ class Island extends Component {
   constructor(){
     super();
     this.state = {
-      currentRoom: '7'
+      currentRoom: '0'
     };
   }
 
@@ -82,9 +107,10 @@ class Island extends Component {
 
 
     function connections() {
-      let temp = [previousRoom.coordinates[0]*60, (1999 - previousRoom.coordinates[1]*60), currentRoom.coordinates[0]*60, (1999 -  currentRoom.coordinates[1]*60)]
+      let prev = knownLocations.filter( item => item.room_id === String(player1.previousRoom))
+      let curr = knownLocations.filter( item => item.room_id === String(player1.currentRoom))
+      let temp = [prev[0].coordinates[0]*60, (1999 - prev[0].coordinates[1]*60), curr[0].coordinates[0]*60, (1999 -  curr[0].coordinates[1]*60)]
       let zero = visitedRoutes.filter(visit => JSON.stringify(visit) === JSON.stringify(temp))
-      console.log('zero')
       if (zero.length === 0) {
         visitedRoutes.push(temp)
       }
@@ -99,10 +125,18 @@ class Island extends Component {
     function treasureMap() {
       for (let i = 0; i < knownLocations.length; i++) {
 
-        if (knownLocations[i].room_id === currentRoom.room_id) {
+        if (knownLocations[i].room_id === String(player1.currentRoom)) {
           p.noStroke()
           p.ellipseMode(p.RADIUS)
           p.fill('aqua');
+          p.ellipse(knownLocations[i].coordinates[0]*60, (1999 - knownLocations[i].coordinates[1]*60), 25, 25);
+        }
+
+        else if (knownLocations[i].title === "Shop")  {
+
+          p.noStroke()
+          p.ellipseMode(p.RADIUS)
+          p.fill('gold');
           p.ellipse(knownLocations[i].coordinates[0]*60, (1999 - knownLocations[i].coordinates[1]*60), 25, 25);
         }
         else {
@@ -118,11 +152,22 @@ class Island extends Component {
   function words() {
 
     for (let i = 0; i < knownLocations.length; i++) {
-        p.noStroke()
-        p.textSize(16);
-        p.fill(0, 102, 153);
-        p.textAlign(p.CENTER)
-        p.text(knownLocations[i].room_id, knownLocations[i].coordinates[0]*60, (1999 - knownLocations[i].coordinates[1]*60)+5)
+        if (knownLocations[i].title === "Shop") {
+          p.noStroke()
+          p.textSize(16);
+          p.fill(0, 102, 153);
+          p.textAlign(p.CENTER)
+          p.text(knownLocations[i].title, knownLocations[i].coordinates[0]*60, (1999 - knownLocations[i].coordinates[1]*60)+5)
+
+        }
+        else {
+          p.noStroke()
+          p.textSize(16);
+          p.fill(0, 102, 153);
+          p.textAlign(p.CENTER)
+          p.text(knownLocations[i].room_id, knownLocations[i].coordinates[0]*60, (1999 - knownLocations[i].coordinates[1]*60)+5)
+
+        }
     }
   }
   
@@ -136,56 +181,64 @@ class Island extends Component {
 
     p.draw = () => {
       p.background('tan');
-      if (previousRoom !== '') {
+      if (knownLocations.length >= 2) {
         connections()
       }
       p.noStroke()
       p.textSize(40)
-      p.text(`current room: ${currentRoom.room_id}`,750, 100)
+      p.text(`current room: ${player1.currentRoom}`,750, 100)
       p.noStroke()
       p.textSize(40)
-      p.text(`previous room: ${previousRoom.room_id}`,300, 100)
+      p.text(`previous room: ${player1.previousRoom}`,300, 100)
 
       treasureMap()
       words()
-      dom.html(currentRoom.room_id)
+      dom.html(player1.currentRoom)
     }
 
     p.keyPressed = () => {
-      let current = knownLocations.filter(room => room.room_id === currentRoom.room_id)
+      let curr = knownLocations.filter(room => room.room_id === String(player1.currentRoom))
 
-      if (p.keyCode === p.DOWN_ARROW && current[0]["exits"]["s"] !== undefined) {
-        previousRoom = Object.assign(currentRoom)
-        const nextRoom = islandMap.filter(loc => loc.room_id === String(current[0]["exits"]["s"]))
-        knownLocations.push(nextRoom[0])
-        currentRoom = nextRoom[0]
+      if (p.keyCode === p.DOWN_ARROW && curr[0]["exits"]["s"] !== undefined) {
+        player1.previousRoom = player1.currentRoom
+        const nextRoom = islandMap.filter(loc => loc.room_id === String(curr[0]["exits"]["s"]))
+        if (knownLocations.filter(r => r.room_id === nextRoom[0].room_id).length === 0) {
+          knownLocations.push(nextRoom[0])
+        }
+        player1.currentRoom = Number(nextRoom[0].room_id)
 
         p.redraw(1)
       }
 
-      else if (p.keyCode === p.UP_ARROW && current[0]["exits"]["n"] !== undefined) {
-        previousRoom = Object.assign(currentRoom)
-        const nextRoom = islandMap.filter(loc => loc.room_id === String(current[0]["exits"]["n"]))
-        knownLocations.push(nextRoom[0])
-        currentRoom = nextRoom[0]
+      else if (p.keyCode === p.UP_ARROW && curr[0]["exits"]["n"] !== undefined) {
+        player1.previousRoom = player1.currentRoom
+        const nextRoom = islandMap.filter(loc => loc.room_id === String(curr[0]["exits"]["n"]))
+        if (knownLocations.filter(r => r.room_id === nextRoom[0].room_id).length === 0) {
+          knownLocations.push(nextRoom[0])
+        }        
+        player1.currentRoom = Number(nextRoom[0].room_id)
 
         p.redraw(1)
 
       }
 
-      else if (p.keyCode === p.LEFT_ARROW && current[0]["exits"]["w"] !== undefined) {
-        previousRoom = Object.assign(currentRoom)
-        const nextRoom = islandMap.filter(loc => loc.room_id === String(current[0]["exits"]["w"]))
-        knownLocations.push(nextRoom[0])
-        currentRoom = nextRoom[0]
+      else if (p.keyCode === p.LEFT_ARROW && curr[0]["exits"]["w"] !== undefined) {
+        player1.previousRoom = player1.currentRoom
+        const nextRoom = islandMap.filter(loc => loc.room_id === String(curr[0]["exits"]["w"]))
+        if (knownLocations.filter(r => r.room_id === nextRoom[0].room_id).length === 0) {
+          knownLocations.push(nextRoom[0])
+        }        
+        player1.currentRoom = Number(nextRoom[0].room_id)
         p.redraw(1)
       }
 
-      else if (p.keyCode === p.RIGHT_ARROW && current[0]["exits"]["e"] !== undefined) {
-        previousRoom = Object.assign(currentRoom)
-        const nextRoom = islandMap.filter(loc => loc.room_id === String(current[0]["exits"]["e"]))
-        knownLocations.push(nextRoom[0])
-        currentRoom = nextRoom[0]
+      else if (p.keyCode === p.RIGHT_ARROW && curr[0]["exits"]["e"] !== undefined) {
+        player1.previousRoom = player1.currentRoom
+        const nextRoom = islandMap.filter(loc => loc.room_id === String(curr[0]["exits"]["e"]))
+        if (knownLocations.filter(r => r.room_id === nextRoom[0].room_id).length === 0) {
+          knownLocations.push(nextRoom[0])
+        }        
+        player1.currentRoom = Number(nextRoom[0].room_id)
 
         p.redraw(1)
       }
