@@ -31,6 +31,7 @@ const PORT = 5050;
 
 const getUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/';
 const moveUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/move/';
+
 // // Uncomment These as you need them...
 const takeUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/take/';
 const dropUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/';
@@ -76,6 +77,18 @@ let rooms = {}
 let reversePath = []
 let roomsDict = {}
 
+function createRoom(res) {
+  const room = new Room(
+    res.data.room_id,
+    res.data.title,
+    res.data.coordinates,
+    res.data.items,
+    res.data.exits,
+    res.data.cooldown
+  ) 
+  return room 
+}
+
 async function getData() {
   const config = {
       method: 'get',
@@ -84,158 +97,112 @@ async function getData() {
         Authorization: `Token ${params.TOKEN}`
       }
   }
-  wait(11000)
+  wait(10001)
   let getRoomData = await Promise.resolve(axios(config)
     .then(res => {
-      const room = new Room(
-        res.data.room_id,
-        res.data.title,
-        res.data.coordinates,
-        res.data.items,
-        res.data.exits,
-        res.data.cooldown
-      ) 
-      return room 
+      let room = createRoom(res)
+      return room
     })
-    )
-    return getRoomData
-    // .catch(err => console.log(err));
-}
-
-
-
-
-
-function doWhile(roomData) {
-  while (Object.keys(rooms).length < 500 ) {
-    // let x = await setTimeout(getData(), (11 * 1000))
-    
-    let x = roomData
-    
-    console.log("X: \n", x)
-    console.log("RUNNING WHILE LOOP")
-    if (!(x.room_id in rooms)) {
-      rooms[x.room_id] = x
-      roomsDict[x.room_id] = x
-      let lastDirection = reversePath[-1]
-      delete roomsDict[x.room_id].lastDirection
-    }
-    while (roomsDict[x.room_id].length < 1) {
-      let reverse = reversePath.pop()
-      traversalPath.push(reverse)
-      move(reverse)
-    }
-    
-    let exitDirection = Object.keys(roomsDict[x.room_id]).shift()
-    traversalPath.push(exitDirection)
-    reversePath.push(inverseDirections[exitDirection])
-    move(exitDirection)
-    
-    //not sure if needed
-    // if(500 - rooms.length === 1) {
-      //     rooms[x.room_id] = x.room_id.getRoom()
-      //   }
-      
-    }
+    .catch(err => console.log("GetDataError: ", err))
+  )
+  return getRoomData
     
 }
-      (async () => {
-        let roomData = await getData().then(data => { return data })
-        roomsDict[roomData.room_id] = roomData
-        rooms[roomData.room_id] = roomData
-        console.log("THIS IS getRoomData:", roomsDict[roomData.room_id])
-        doWhile(roomData)
-      })()
-        
 
-// async function getRoom() {
-//   let timeOut = 1;
-//   const config = {
-//       method: 'get',
-//       url: getUrl,
-//       headers: {
-//         Authorization: `Token ${params.TOKEN}`
-//       }
-//   }
-//   await axios(config)
-//     .then(res => {
-//       prevRoom = res.data.room_id;
-//       if (!map[res.data.room_id]) {
-//         let exits = {};
-//         res.data.exits.map(exit => {
-//           exits[exit] = '?';
-//         });
-//         let coords = res.data.coordinates;
-//         let info = [];
-//         info.push(coords, exits);
-//         map[res.data.room_id] = info;
-//         // console.log('Map in getRoom', map);
-//       }
-//       currentRoom = res.data.room_id;
-//       // console.log("Current Room: ", currentRoom);
-//       const room = new Room(
-//         res.data.room_id,
-//         res.data.title,
-//         res.data.coordinates,
-//         res.data.items,
-//         res.data.exits,
-//         res.data.cooldown
-//       );
-//       timeOut = res.data.cooldown;
-//       stack.push(room);
-//       return room
-//     })
-//     .catch(err => console.log(err));
-// }
-
-// (async () => {
-//   let q = await getRoom().then(data => { return data })
-//   console.log("ROOMDICT", q)
-//  })()
-
-
-
-// MOVE function that takes in a direction then pushes map information into map variable.
 async function move(moveDirection) {
-  let oppositeDirection = { n: 's', s: 'n', e: 'w', w: 'e' };
-  let timeOut = 1;
   const config = {
-    method: 'post',
-    url: moveUrl,
-    headers: {
-      Authorization: `Token ${params.TOKEN}`
-    },
-    body: {
-      direction: moveDirection
-    }
-  };
-  await axios({
+      method: 'post',
+      url: moveUrl,
+      headers: {
+          Authorization: `Token ${params.TOKEN}`
+      },
+      body: {
+          direction: moveDirection
+      }
+  }
+  wait(10001)
+  let moveRoomData = await Promise.resolve(axios({
     method: config.method,
     url: moveUrl,
     data: config.body,
     headers: config.headers
   })
     .then(res => {
-      timeOut = res.data.cooldown;
-      // Checking to see if room is in the map already
-      if (!map[res.data.room_id]) {
-        let exits = {};
-        // map all exits with '?'
-        res.data.exits.map(exit => {
-          exits[exit] = '?';
-        });
-        // sets the exit from the opposite of moveDirection to be prevRoom
-        exits[oppositeDirection[moveDirection]] = prevRoom;
-        prevRoom = res.data.room_id;
-        let coords = res.data.coordinates;
-        let info = [];
-        info.push(coords, exits);
-        map[res.data.room_id] = info;
-      }
-      console.log('Map from move', map);
+      let room = createRoom(res)
+      return room
     })
-    .catch(err => console.log(err));
+    .catch(err => { console.log("Move Error: ", err) })
+  )
+      return moveRoomData
 }
+
+
+//       if (!(x.room_id in rooms)) {
+//         rooms[x.room_id] = x
+//         roomsDict[x.room_id] = x
+//         let lastDirection = reversePath[-1]
+//         delete roomsDict[x.room_id].lastDirection
+//       }
+
+
+        // sets the exit from the opposite of moveDirection to be prevRoom
+      //   exits[oppositeDirection[moveDirection]] = prevRoom;
+      //   prevRoom = res.data.room_id;
+      //   let coords = res.data.coordinates;
+      //   let info = [];
+      //   info.push(coords, exits);
+      //   map[res.data.room_id] = info;
+       
+    //   console.log('Map from move', map);
+    // }))
+    // .catch(err => console.log("ERROR: ", err));
+// }
+
+
+
+
+async function doWhile(roomData) {
+  // while (Object.keys(rooms).length < 500 ) {
+    // let x = await setTimeout(getData(), (11 * 1000))
+    
+    let x = roomData
+    
+    console.log("RUNNING WHILE LOOP")
+    console.log("CurrentRoom: ", x)
+    if (!(x.room_id in rooms)) {
+      rooms[x.room_id] = x
+      roomsDict[x.room_id] = x
+      let lastDirection = reversePath[-1]
+      delete roomsDict[x.room_id].lastDirection
+    }
+    while (roomsDict[x.room_id].length < 500) {
+      let reverse = reversePath.pop()
+      traversalPath.push(reverse)
+      move(reverse)
+    }
+    
+    let exitDirection = roomsDict[x.room_id].exits.shift()
+    traversalPath.push(exitDirection)
+    reversePath.push(inverseDirections[exitDirection])
+    let nextRoom = await move(exitDirection)
+    doWhile(nextRoom)
+    
+    //not sure if needed
+    // if(500 - rooms.length === 1) {
+      //     rooms[x.room_id] = x.room_id.getRoom()
+      //   }
+      
+    
+}
+      (async () => {
+        let roomData = await getData().then(data => { return data })
+        roomsDict[roomData.room_id] = roomData
+        rooms[roomData.room_id] = roomData
+        doWhile(roomData)
+      })()
+        
+
+
 
 async function take() {
   const config = {
