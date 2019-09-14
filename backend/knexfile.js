@@ -16,7 +16,7 @@ module.exports = {
 
   production: {
     client: "pg",
-    connection: process.env.DATABASE_URL,
+    connection: 'postgres://localhost/island',
     migrations: {
       tableName: "island",
       directory: "./migrations"
