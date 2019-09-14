@@ -18,6 +18,9 @@ import 'p5/lib/addons/p5.sound';
 //     "messages": []
 //   }
 
+
+
+
 class Room {
   constructor(
     room_id,
@@ -43,6 +46,28 @@ class Room {
     this.messages = messages;
   }
 }
+
+class Player {
+  constructor(playerID, name, cooldown, encumbrance, strength, speed, wearing, gold, mining, currentRoom, inventory, status, errors, messages  ) {
+  
+    this.playerID = playerID
+    this.name = name;
+    this.cooldown = cooldown;
+    this.encumbrance = encumbrance;
+    this.strength = strength; 
+    this.speed = speed;
+    this.wearing = wearing;
+    this.gold = gold;
+    this.mining = mining;
+    this.currentRoom = currentRoom
+    this.inventory = inventory;
+    this.status = status;
+    this.errors = errors;
+    this.messages = messages;
+}
+}
+
+let player1 = new Player("75578be1cf6136d88fb6b170e43b7da71dea5f84", "player188", 5.0, 7, 10, 4, [], 4444, false, 0, '', [], [], [], [])
 
 const islandMap = [];
 const roomGraph = {
@@ -572,11 +597,12 @@ let visitedRoutes = [];
 
 const knownLocations = [currentRoom];
 
+
 class Island extends Component {
   constructor() {
     super();
     this.state = {
-      currentRoom: '7'
+      currentRoom: '0'
     };
   }
 
@@ -598,6 +624,7 @@ class Island extends Component {
         visit => JSON.stringify(visit) === JSON.stringify(temp)
       );
       console.log('zero');
+
       if (zero.length === 0) {
         visitedRoutes.push(temp);
       }
@@ -628,6 +655,7 @@ class Island extends Component {
         } else {
           p.noStroke();
           p.ellipseMode(p.RADIUS);
+
           p.fill('#ffff');
           p.ellipse(
             knownLocations[i].coordinates[0] * 60,
@@ -651,6 +679,7 @@ class Island extends Component {
           1999 - knownLocations[i].coordinates[1] * 60 + 5
         );
       }
+
     }
 
     let dom;
@@ -676,6 +705,7 @@ class Island extends Component {
       p.noStroke();
       p.textSize(40);
       p.text(`previous room: ${previousRoom.room_id}`, 300, 100);
+
 
       treasureMap();
       words();

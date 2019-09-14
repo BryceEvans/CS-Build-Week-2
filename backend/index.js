@@ -24,6 +24,7 @@ server.get('/players/:playerID', (req,res) => {
   .where("playerID", req.params.playerID)
   .then((players) => {
     res.send(players)
+
   })
 })
 
@@ -555,8 +556,6 @@ server.put('/map/update/:room_id', (req,res) => {
       console.log(treasureMap, 'length is', treasureMap.length)
       return res})
     
-
-
 
 
 server.listen(PORT, () => {
