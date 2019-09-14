@@ -24,7 +24,7 @@ var stack = [];
 
 server.use(express.json(), cors());
 
-const PORT = 5050;
+const PORT = process.env.PORT || 5050;
 
 const getUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/';
 const moveUrl = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/move/';
