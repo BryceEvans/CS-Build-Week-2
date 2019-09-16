@@ -4,6 +4,7 @@ import './App.css';
 import p5 from 'p5';
 import 'p5/lib/addons/p5.dom';
 import 'p5/lib/addons/p5.sound';
+import PlayerStatus from './Status'
 
 // {
 //     "room_id": 0,
@@ -47,27 +48,9 @@ class Room {
   }
 }
 
-class Player {
-  constructor(playerID, name, cooldown, encumbrance, strength, speed, wearing, gold, mining, currentRoom, inventory, status, errors, messages  ) {
-  
-    this.playerID = playerID
-    this.name = name;
-    this.cooldown = cooldown;
-    this.encumbrance = encumbrance;
-    this.strength = strength; 
-    this.speed = speed;
-    this.wearing = wearing;
-    this.gold = gold;
-    this.mining = mining;
-    this.currentRoom = currentRoom
-    this.inventory = inventory;
-    this.status = status;
-    this.errors = errors;
-    this.messages = messages;
-}
-}
 
-let player1 = new Player("75578be1cf6136d88fb6b170e43b7da71dea5f84", "player188", 5.0, 7, 10, 4, [], 4444, false, 0, '', [], [], [], [])
+
+// let player1 = new Player("75578be1cf6136d88fb6b170e43b7da71dea5f84", "player188", 5.0, 7, 10, 4, [], 4444, false, 0, '', [], [], [], [])
 
 const islandMap = [];
 const roomGraph = {
@@ -781,7 +764,8 @@ class Island extends Component {
       <div>
         <h1 className="hello">{this.state.currentRoom}</h1>
         <div className="flip">
-          <P5Wrapper sketch={this.sketch} color={this.state.color}></P5Wrapper>
+          <PlayerStatus />
+          <P5Wrapper sketch={this.sketch} color={this.state.color}></P5Wrapper>          
         </div>
       </div>
     );
