@@ -386,94 +386,94 @@ function add_room(r, map) {
   }
 }
 
-async function explore_final() {
-  let depth = [];
-  let visited = [];
-  let starting_room = await getData();
-  let traversalPath = [];
+// async function explore_final() {
+//   let depth = [];
+//   let visited = [];
+//   let starting_room = await getData();
+//   let traversalPath = [];
 
-  add_room(starting_room, treasureMap);
+//   add_room(starting_room, treasureMap);
 
-  /* """
-    #     Print each vertex in depth-first order
-    #     beginning from starting_vertex.
-    #     """
-    */
-  depth.push(starting_room);
-  let unexplored_room = null;
-  wait(starting_room.cooldown * 1010);
-  while (Object.keys(treasureMap).length < 2) {
-    let current_room = await getData();
+//   /* """
+//     #     Print each vertex in depth-first order
+//     #     beginning from starting_vertex.
+//     #     """
+//     */
+//   depth.push(starting_room);
+//   let unexplored_room = null;
+//   wait(starting_room.cooldown * 1010);
+//   while (Object.keys(treasureMap).length < 2) {
+//     let current_room = await getData();
 
-    console.log(`current room is ${current_room.room_id}`);
-    console.log(
-      `treasureMap ${(Object.keys(treasureMap).length / 500) * 100}%  ${
-        Object.keys(treasureMap).length
-      }`
-    );
-    wait(current_room.cooldown * 1000);
-    if (!(current_room.room_id in treasureMap)) {
-      add_room(current_room, treasureMap);
-    }
+//     console.log(`current room is ${current_room.room_id}`);
+//     console.log(
+//       `treasureMap ${(Object.keys(treasureMap).length / 500) * 100}%  ${
+//         Object.keys(treasureMap).length
+//       }`
+//     );
+//     wait(current_room.cooldown * 1000);
+//     if (!(current_room.room_id in treasureMap)) {
+//       add_room(current_room, treasureMap);
+//     }
 
-    let nextDirection = null;
+//     let nextDirection = null;
 
-    let prevDirection = [...traversalPath].pop();
+//     let prevDirection = [...traversalPath].pop();
 
-    // # if we haven't treasureMap_final this room yet, mark it as treasureMap_final
+//     // # if we haven't treasureMap_final this room yet, mark it as treasureMap_final
 
-    // # pick a random exit from the current room
+//     // # pick a random exit from the current room
 
-    if (treasureMap[current_room.room_id][prevDirection] == '?') {
-      nextDirection = prevDirection;
-    } else {
-      for (direction in treasureMap[current_room.room_id]) {
-        if (treasureMap[current_room.room_id][direction] == '?') {
-          console.log('direction, is it really?', direction);
-          nextDirection = direction;
-          break;
-        }
-      }
-    }
+//     if (treasureMap[current_room.room_id][prevDirection] == '?') {
+//       nextDirection = prevDirection;
+//     } else {
+//       for (direction in treasureMap[current_room.room_id]) {
+//         if (treasureMap[current_room.room_id][direction] == '?') {
+//           console.log('direction, is it really?', direction);
+//           nextDirection = direction;
+//           break;
+//         }
+//       }
+//     }
 
-    if (nextDirection === null) {
-      backtrackDirection = depth.pop();
-      await move(backtrackDirection);
-      traversalPath.push(backtrackDirection);
-    }
-    // # room is fully explored, backtrack
-    else {
-      await move(nextDirection);
-      traversalPath.push(nextDirection);
-      depth.push(inverseDirections[nextDirection]);
-      let room = await getData();
-      console.log('roomy', room);
-      treasureMap[current_room.room_id][nextDirection] = room.room_id;
-      if (!Object.values(treasureMap[current_room.room_id]).includes('?')) {
-        completeMap.filter(place => place.room_id)[0].exits =
-          treasureMap[current_room.room_id];
-      }
-    }
-    // # travel in the selected direction
+//     if (nextDirection === null) {
+//       backtrackDirection = depth.pop();
+//       await move(backtrackDirection);
+//       traversalPath.push(backtrackDirection);
+//     }
+//     // # room is fully explored, backtrack
+//     else {
+//       await move(nextDirection);
+//       traversalPath.push(nextDirection);
+//       depth.push(inverseDirections[nextDirection]);
+//       let room = await getData();
+//       console.log('roomy', room);
+//       treasureMap[current_room.room_id][nextDirection] = room.room_id;
+//       if (!Object.values(treasureMap[current_room.room_id]).includes('?')) {
+//         completeMap.filter(place => place.room_id)[0].exits =
+//           treasureMap[current_room.room_id];
+//       }
+//     }
+//     // # travel in the selected direction
 
-    // print('ending', len(questions), room )
+//     // print('ending', len(questions), room )
 
-    // print('END', traversalPath)
-  }
+//     // print('END', traversalPath)
+//   }
 
-  for (let [key, value] of Object.entries(traversalPath)) {
-    for (let i = 0; i < completeMap.length; i++) {
-      if (completeMap[i].room_id === key) {
-        completeMap[i].exits = value;
-      }
-    }
-  }
-}
+//   for (let [key, value] of Object.entries(traversalPath)) {
+//     for (let i = 0; i < completeMap.length; i++) {
+//       if (completeMap[i].room_id === key) {
+//         completeMap[i].exits = value;
+//       }
+//     }
+//   }
+// }
 
-explore_final().then(res => {
-  console.log(treasureMap, 'length is', treasureMap.length);
-  return res;
-});
+// explore_final().then(res => {
+//   console.log(treasureMap, 'length is', treasureMap.length);
+//   return res;
+// });
 
 server.listen(PORT, () => {
   console.log(`Server is listening on Port ${PORT}`);
