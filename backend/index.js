@@ -475,6 +475,39 @@ function add_room(r, map) {
 //   return res;
 // });
 
+// def proof_of_work(last_proof):
+//     """
+//     Simple Proof of Work Algorithm
+//     Find a number p such that hash(last_block_string, p) contains 6 leading
+//     zeroes
+//     """
+
+//     print("Start work on a new proof")
+//     proof = 0
+
+//     # for block 1, hash(1, p) = 000000x
+
+//     while not valid_proof(last_proof, proof) :
+//         proof += 1
+//     print("Attempting to mine")
+//     return proof
+
+// def valid_proof(last_proof, proof):
+//     """
+//     Validates the Proof:  Does hash(block_string, proof) contain 6
+//     leading zeroes?
+//     """
+//     # build string to hash
+//     guess = f'{last_proof}{proof}'.encode()
+//     # use hash function
+//     guess_hash = hashlib.sha256(guess).hexdigest()
+//     #check if 6 leading 0's in hash result
+//     beg = guess_hash[0:6] # [:6]
+//     if beg == "000000":
+//         return True
+//     else:
+//         return False
+
 server.listen(PORT, () => {
   console.log(`Server is listening on Port ${PORT}`);
 });

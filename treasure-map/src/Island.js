@@ -5,7 +5,8 @@ import p5 from 'p5';
 import 'p5/lib/addons/p5.dom';
 import 'p5/lib/addons/p5.sound';
 import PlayerStatus from './Status'
-
+import axios from 'axios'
+import qs from 'qs'
 // {
 //     "room_id": 0,
 //     "title": "Room 0",
@@ -62,7 +63,8 @@ class Island extends Component {
   constructor() {
     super();
     this.state = {
-      currentRoom: '0'
+      currentRoom: '...',
+      previousRoom: '...'
     };
   }
 
@@ -211,10 +213,13 @@ class Island extends Component {
 
     let canvas;
     let dom;
+    let dom2;
+
     let previousRoom = '';
     let knownLocations;
   let currentRoom;
   let visitedRoutes;
+  let status;
 
   p.preload = () => {
 
@@ -225,29 +230,91 @@ class Island extends Component {
       canvas = p.createCanvas(1600, 2000);
       p.noStroke();
       dom = p.select('.hello');
+      dom2 = p.select('.goodbye');
+
     };
 
     function getInit(data) {
-      knownLocations = data
-      currentRoom = data[444]
-      
+      knownLocations = data 
+      const config = {
+        method: 'get',
+        url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
+        headers: {
+          Authorization: `Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9`
+        }
+      };
+    axios(config)
+        .then(res => {
+            console.log(res.data)
+        currentRoom = res.data
+          console.log('status quo', currentRoom)
+        })
+        .catch(err => console.log('GetDataError: ', err))
+      }
+
+    function stat() {
+        const config = {
+            method: 'post',
+            url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/status/',
+            headers: {
+              Authorization: `Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9`
+            }
+          };
+        axios(config)
+            .then(res => {
+            status = res.data
+            })
+            .catch(err => console.log('GetDataError: ', err))
     }
+
+    function gotIt() {
+      const config = {
+          method: 'get',
+          url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
+          headers: {
+            Authorization: `Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9`
+          }
+        };
+      axios(config)
+          .then(res => {
+          currentRoom = res.data
+          })
+          .catch(err => console.log('GetDataError: ', err))
+  }
+
+    function direction(d) {
+     fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify({direction: d}), // data can be `string` or {object}!
+      headers:{
+        'Authorization': 'Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .then(response => currentRoom = response)
+    .catch(error => console.error('Error:', error));
+}
 
     p.draw = () => {
       p.background('tan');
+      if (currentRoom !== undefined)
+      {
+
+
         connections();
+        treasureMap();
+        words();
+        dom.html(`Current Room: ${currentRoom.room_id}`);
+        dom2.html(`Previous Room: ${previousRoom.room_id}`);
+
+      }
+ 
 
 
       // p.noStroke();
       // p.textSize(40);
       // p.text(`previous room: ${previousRoom.room_id}`, 300, 100);
-
-
-      treasureMap();
-      words();
-      // dom.html(currentRoom.room_id);
     };
-
     p.keyPressed = () => {
       let current = knownLocations.filter(
         room => room.room_id === currentRoom.room_id
@@ -257,44 +324,38 @@ class Island extends Component {
         p.keyCode === p.DOWN_ARROW &&
         current[0]['exits']['s'] !== undefined
       ) {
-        previousRoom = Object.assign(currentRoom);
-        const nextRoom = knownLocations.filter(
-          loc => loc.room_id === current[0]['exits']['s']
-        );
-        currentRoom = nextRoom[0];
-
-        p.redraw(1);
-      } else if (
+        previousRoom = currentRoom;
+        direction("s");
+      } 
+      else if (
         p.keyCode === p.UP_ARROW &&
         current[0]['exits']['n'] !== undefined
       ) {
-        previousRoom = Object.assign(currentRoom);
-        const nextRoom = knownLocations.filter(
-          loc => loc.room_id === current[0]['exits']['n']
-        );
-        currentRoom = nextRoom[0];
+        console.log('before', 'current', currentRoom, 'prev', previousRoom)
 
+        previousRoom = currentRoom;
+        direction('n')
+        console.log('current', currentRoom, 'prev', previousRoom)
         p.redraw(1);
       } else if (
         p.keyCode === p.LEFT_ARROW &&
         current[0]['exits']['w'] !== undefined
       ) {
-        previousRoom = Object.assign(currentRoom);
-        const nextRoom = knownLocations.filter(
-          loc => loc.room_id === current[0]['exits']['w']
-        );
-        currentRoom = nextRoom[0];
+        console.log('current', currentRoom, 'prev', previousRoom)
+
+        previousRoom = currentRoom;
+        direction('w')
+        console.log('current', currentRoom, 'prev', previousRoom)
+
         p.redraw(1);
       } else if (
         p.keyCode === p.RIGHT_ARROW &&
         current[0]['exits']['e'] !== undefined
       ) {
-        previousRoom = Object.assign(currentRoom);
-        const nextRoom = knownLocations.filter(
-          loc => loc.room_id === current[0]['exits']['e']
-        );
-        currentRoom = nextRoom[0];
-
+        console.log('current', currentRoom, 'prev', previousRoom)
+        previousRoom = currentRoom;
+        direction('e')
+        console.log('current', currentRoom, 'prev', previousRoom)
         p.redraw(1);
       } else {
         console.log('No direction exists!');
@@ -312,6 +373,8 @@ class Island extends Component {
     return (
       <div>
         <h1 className="hello">{this.state.currentRoom}</h1>
+        <h1 className="goodbye">{this.state.currentRoom}</h1>
+
         <div className="flip">
           <PlayerStatus />
           <P5Wrapper sketch={this.sketch} color={this.state.color}></P5Wrapper>          
