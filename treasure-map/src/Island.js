@@ -55,8 +55,14 @@ class Room {
 // let player1 = new Player("75578be1cf6136d88fb6b170e43b7da71dea5f84", "player188", 5.0, 7, 10, 4, [], 4444, false, 0, '', [], [], [], [])
 
 
+// Corey
+const activePlayer = '65ef3fd1d9226f97f50a440cb4dd09b64e0d6a8c'
 
+// Levi
+// const activePlayer = '3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9'
 
+//Bryce
+// const activePlayer = '75578be1cf6136d88fb6b170e43b7da71dea5f84'
 
 
 
@@ -264,7 +270,7 @@ class Island extends Component {
         method: 'get',
         url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
         headers: {
-          Authorization: `Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9`
+          Authorization: `Token ${activePlayer}`
         }
       };
     axios(config)
@@ -279,7 +285,7 @@ class Island extends Component {
             method: 'post',
             url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/status/',
             headers: {
-              Authorization: `Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9`
+              Authorization: `Token ${activePlayer}`
             }
           };
         axios(config)
@@ -302,7 +308,7 @@ class Island extends Component {
           method: 'get',
           url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
           headers: {
-            Authorization: `Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9`
+            Authorization: `Token ${activePlayer}`
           }
         };
       axios(config)
@@ -317,14 +323,14 @@ class Island extends Component {
       method: 'POST', // or 'PUT'
       body: JSON.stringify({direction: d}), // data can be `string` or {object}!
       headers:{
-        'Authorization': 'Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9',
+        'Authorization': `Token ${activePlayer}`,
         'Content-Type': 'application/json'
       }
     }).then(res => res.json())
     .then(response => currentRoom = response)
     .catch(error => console.error('Error:', error));
 }
-// curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"denise escobar"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/
+// curl -X POST -H 'Authorization:`Token ${activePlayer}` -H "Content-Type: application/json" -d '{"name":"denise escobar"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/
 
 
 async function proof_of_work() {
@@ -338,7 +344,7 @@ async function proof_of_work() {
   await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/last_proof/', {
     method: 'GET', // or 'PUT'
     headers:{
-      'Authorization': 'Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9',
+      'Authorization': `Token ${activePlayer}`,
     }
   }).then(res => res.json())
   .then(response => {
@@ -347,7 +353,7 @@ async function proof_of_work() {
     cooldown = response.cooldown
   })
   .catch(error => console.error('Error:', error));
-  // curl -X GET -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
+  // curl -X GET -H 'Authorization:`Token ${activePlayer}` https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
   let proof = 4
 
   while (valid_proof(last_proof, proof, difficulty) === false) {
@@ -363,7 +369,7 @@ async function proof_of_work() {
     method: 'POST', // or 'PUT'
     body: JSON.stringify({proof: solution}), // data can be `string` or {object}!
     headers:{
-      'Authorization': 'Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9',
+      'Authorization': `Token ${activePlayer}`,
     }
   }).then(res => res.json())
   .then(response => console.log(response.messages[0]))
@@ -373,7 +379,7 @@ async function proof_of_work() {
   await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/', {
     method: 'GET', // or 'PUT'
     headers:{
-      'Authorization': 'Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9',
+      'Authorization': `Token ${activePlayer}`,
     }
   }).then(res => res.json())
   .then(response => {
@@ -383,7 +389,7 @@ async function proof_of_work() {
   mining = false;
   p.redraw(1);
 }
-// curl -X GET -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
+// curl -X GET -H 'Authorization:`Token ${activePlayer}` https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
 
   
 function valid_proof(last_proof, proof, proof_difficulty) {
