@@ -7,6 +7,7 @@ import 'p5/lib/addons/p5.sound';
 import PlayerStatus from './Status'
 import axios from 'axios'
 import qs from 'qs'
+import {sha256} from 'js-sha256'
 // {
 //     "room_id": 0,
 //     "title": "Room 0",
@@ -93,7 +94,18 @@ class Island extends Component {
 
     function treasureMap() {
       for (let i = 0; i < knownLocations.length; i++) {
-        if (knownLocations[i].room_id === currentRoom.room_id) {
+        if (knownLocations[i].room_id === 250 && mining === true) {
+          p.stroke('white');
+          p.strokeWeight(5);
+          p.ellipseMode(p.RADIUS);
+          p.fill('blue');
+          p.circle(
+            knownLocations[i].coordinates[0]*65-3200,
+            1999 - knownLocations[i].coordinates[1]*65+2900,
+            40
+          );
+        }
+        else if (knownLocations[i].room_id === currentRoom.room_id) {
           p.stroke('white');
           p.strokeWeight(5);
           p.ellipseMode(p.RADIUS);
@@ -173,7 +185,19 @@ class Island extends Component {
 
     function words() {
       for (let i = 0; i < knownLocations.length; i++) {
-        if (knownLocations[i].room_id === currentRoom.room_id) {
+        if (knownLocations[i].room_id === 250 && mining === true) {
+          p.noStroke();
+          p.textSize(16);
+          p.fill('white');
+          p.textAlign(p.CENTER);
+          p.text(
+            'Mining',
+            knownLocations[i].coordinates[0]*65-3200,
+            1999 - knownLocations[i].coordinates[1]*65+2900+5
+          );
+
+        }
+        else if (knownLocations[i].room_id === currentRoom.room_id) {
           p.noStroke();
           p.textSize(16);
           p.fill('black');
@@ -220,7 +244,7 @@ class Island extends Component {
   let currentRoom;
   let visitedRoutes;
   let status;
-
+    let mining = false;
   p.preload = () => {
 
     p.loadJSON('http://localhost:5050/map', getInit);
@@ -245,9 +269,7 @@ class Island extends Component {
       };
     axios(config)
         .then(res => {
-            console.log(res.data)
         currentRoom = res.data
-          console.log('status quo', currentRoom)
         })
         .catch(err => console.log('GetDataError: ', err))
       }
@@ -265,6 +287,14 @@ class Island extends Component {
             status = res.data
             })
             .catch(err => console.log('GetDataError: ', err))
+    }
+
+    function wait(ms) {
+      var start = new Date().getTime();
+      var end = start;
+      while (end < start + ms) {
+        end = new Date().getTime();
+      }
     }
 
     function gotIt() {
@@ -293,6 +323,82 @@ class Island extends Component {
     }).then(res => res.json())
     .then(response => currentRoom = response)
     .catch(error => console.error('Error:', error));
+}
+// curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"denise escobar"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/
+
+
+async function proof_of_work() {
+  let last_proof;
+  let difficulty;
+  let solution;
+  let cooldown;
+  mining = true;
+  p.redraw(1);
+
+  await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/last_proof/', {
+    method: 'GET', // or 'PUT'
+    headers:{
+      'Authorization': 'Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9',
+    }
+  }).then(res => res.json())
+  .then(response => {
+    last_proof = response.proof
+    difficulty = response.difficulty
+    cooldown = response.cooldown
+  })
+  .catch(error => console.error('Error:', error));
+  // curl -X GET -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
+  let proof = 4
+
+  while (valid_proof(last_proof, proof, difficulty) === false) {
+    proof +=3
+  }
+
+  solution = proof
+
+  console.log('s', solution, 'p', proof, 'l', last_proof, 'd', difficulty)
+
+
+  await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/mine/', {
+    method: 'POST', // or 'PUT'
+    body: JSON.stringify({proof: solution}), // data can be `string` or {object}!
+    headers:{
+      'Authorization': 'Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9',
+    }
+  }).then(res => res.json())
+  .then(response => console.log(response.messages[0]))
+  .catch(error => console.error('Error:', error));
+
+  wait(15000)
+  await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/', {
+    method: 'GET', // or 'PUT'
+    headers:{
+      'Authorization': 'Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9',
+    }
+  }).then(res => res.json())
+  .then(response => {
+    console.log(response.messages[0])
+  })
+  .catch(error => console.error('Error:', error));
+  mining = false;
+  p.redraw(1);
+}
+// curl -X GET -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
+
+  
+function valid_proof(last_proof, proof, proof_difficulty) {
+  let difficulty = proof_difficulty;
+  let guess = sha256(String(last_proof) + String(proof));
+
+
+  if (guess.startsWith("0".repeat(difficulty))) {
+    return guess
+  }
+
+  else {
+    return false
+  }
+
 }
 
     p.draw = () => {
@@ -326,36 +432,36 @@ class Island extends Component {
       ) {
         previousRoom = currentRoom;
         direction("s");
-      } 
+      }
+      else if (p.keyCode === p.ENTER && currentRoom.room_id === 250) {
+        proof_of_work()
+      }
+      else if (p.keyCode === p.ENTER && currentRoom.room_id !== 250) {
+        console.log('YOU CANNOT MINE IN THIS ROOM!')
+      }
       else if (
         p.keyCode === p.UP_ARROW &&
         current[0]['exits']['n'] !== undefined
       ) {
-        console.log('before', 'current', currentRoom, 'prev', previousRoom)
 
         previousRoom = currentRoom;
         direction('n')
-        console.log('current', currentRoom, 'prev', previousRoom)
         p.redraw(1);
       } else if (
         p.keyCode === p.LEFT_ARROW &&
         current[0]['exits']['w'] !== undefined
       ) {
-        console.log('current', currentRoom, 'prev', previousRoom)
 
         previousRoom = currentRoom;
         direction('w')
-        console.log('current', currentRoom, 'prev', previousRoom)
 
         p.redraw(1);
       } else if (
         p.keyCode === p.RIGHT_ARROW &&
         current[0]['exits']['e'] !== undefined
       ) {
-        console.log('current', currentRoom, 'prev', previousRoom)
         previousRoom = currentRoom;
         direction('e')
-        console.log('current', currentRoom, 'prev', previousRoom)
         p.redraw(1);
       } else {
         console.log('No direction exists!');
