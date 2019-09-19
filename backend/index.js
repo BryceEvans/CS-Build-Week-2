@@ -7,6 +7,8 @@ const cors = require('cors');
 const axios = require('axios');
 const { Client } = require('pg');
 
+server.use(bodyParser())
+
 server.get('/players', (req, res) => {
   db.select()
     .from('players')
@@ -54,7 +56,7 @@ server.post('/players', (req, res) => {
 });
 
 server.post('/map', (req, res) => {
-  db('players')
+  db('map')
     .insert(req.body)
     .then(() => {
       db.select()
