@@ -358,6 +358,7 @@ async function proof_of_work() {
 
   console.log('s', solution, 'p', proof, 'l', last_proof, 'd', difficulty)
 
+  wait(5000)
 
   await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/mine/', {
     method: 'POST', // or 'PUT'
