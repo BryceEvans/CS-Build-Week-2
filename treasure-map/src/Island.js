@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import P5Wrapper from 'react-p5-wrapper';
-import './App.css';
 import p5 from 'p5';
 import 'p5/lib/addons/p5.dom';
 import 'p5/lib/addons/p5.sound';
-import PlayerStatus from './Status'
+import Status from './Status'
 import axios from 'axios'
 import qs from 'qs'
 import {sha256} from 'js-sha256'
+
 // {
 //     "room_id": 0,
 //     "title": "Room 0",
@@ -56,10 +56,10 @@ class Room {
 
 
 // Corey
-const activePlayer = '65ef3fd1d9226f97f50a440cb4dd09b64e0d6a8c'
+// const activePlayer = '65ef3fd1d9226f97f50a440cb4dd09b64e0d6a8c'
 
 // Levi
-// const activePlayer = '3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9'
+const activePlayer = '3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9'
 
 //Bryce
 // const activePlayer = '75578be1cf6136d88fb6b170e43b7da71dea5f84'
@@ -486,10 +486,10 @@ function valid_proof(last_proof, proof, proof_difficulty) {
     return (
       <div>
         <h1 className="hello">{this.state.currentRoom}</h1>
-        <h1 className="goodbye">{this.state.currentRoom}</h1>
+        <h1 className="goodbye">{this.state.previousRoom}</h1>
 
         <div className="flip">
-          <PlayerStatus />
+          <Status />
           <P5Wrapper sketch={this.sketch} color={this.state.color}></P5Wrapper>          
         </div>
       </div>
