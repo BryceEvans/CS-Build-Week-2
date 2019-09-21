@@ -4,11 +4,14 @@ import './SASS/App.sass';
 
 export default props => {
     return (
-        <div className="player">
-            <Collapsible trigger={'Player Status'}>
-            {Object.keys(props.player).map( (key, index)=>{
-                return <div key={index}><h2>{key}: {key, props.player[key]}</h2></div>
-            })}
+        <div className="accordion player">
+            <Collapsible trigger={'Player Status ⬇'}>
+                <h4 className='pN'>name:</h4>
+                <h4 className='pC'>cooldown:</h4>
+                <h4 className='pE'>encumbrance:</h4>
+                <h4 className='pSTRENGTH'>strength:</h4>
+                <h4 className='pSPEED'>speed:</h4>
+                <h4 className='pG'>gold:</h4>
             </Collapsible>
         </div>
     )

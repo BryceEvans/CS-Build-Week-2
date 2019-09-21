@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import Player from './Player';
 import Inventory from './Inventory';
+import CurrentRoom from './CurrentRoom';
 
 
 class PlayerStatus extends React.Component{
@@ -47,17 +48,18 @@ class PlayerStatus extends React.Component{
         delete player.inventory
         return (
             <div className='status'>
-
-                <form onSubmit={this.getStatus}>
-                    <input type="text" name = "playerToken" onChange={this.inputChangeHandler} value={this.state.playerToken} placeholder="Enter your player token!"/>
-                    <button type='submit'>Submit</button>
-                </form>
                 <div className='panel'>
                 <div>
                 <Player player = {player}/>
                 </div>
                 <div>
                 <Inventory inventory = {this.state.inventory} />
+                </div>
+                <div>
+                <CurrentRoom currentRoom = {this.state.inventory} />
+                </div>
+                <div className="accordion previous">
+                <span className="goodbye">{this.state.previousRoom}</span>
                 </div>
                 </div>
             </div>

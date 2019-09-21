@@ -7,7 +7,8 @@ import Status from './Status'
 import axios from 'axios'
 import qs from 'qs'
 import {sha256} from 'js-sha256'
-
+import Collapsible from 'react-collapsible';
+import './SASS/App.sass';
 // {
 //     "room_id": 0,
 //     "title": "Room 0",
@@ -64,13 +65,13 @@ const activePlayer = '3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9'
 //Bryce
 // const activePlayer = '75578be1cf6136d88fb6b170e43b7da71dea5f84'
 
-
-
+// curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"treasure"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/
+// curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"treasure", "confirm":"yes"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/
 class Island extends Component {
   constructor() {
     super();
     this.state = {
-      currentRoom: '...',
+      currentRoom: {room_id: 22222},
       previousRoom: '...'
     };
   }
@@ -240,16 +241,50 @@ class Island extends Component {
       }
 
     }
-
+    // cooldown: 1
+    // description: "You are standing in the center of a brightly lit room. You notice a shop to the west and exits to the north, south and east."
+    // elevation: 0
+    // errors: []
+    // exits: (4) ["n", "s", "e", "w"]
+    // items: []
+    // messages: []
+    // players: (30) ["stefan", "axisofevil", "player198", "michael trew", "ryan matthews", "dewayne", "player204", "player199", "player195", "player194", "player191", "player186", "player185", "player183", "player210", "player209", "player208", "player207", "player206", "player205", "player203", "player193", "player178", "player173", "player172", "player168", "player170", "player161", "player166", "player169"]
+    // room_id: 0
+    // terrain: "NORMAL"
+    // title: "A brightly lit room"
     let canvas;
     let dom;
     let dom2;
-
-    let previousRoom = '';
+    let dom3;
+    let dom4;
+    let previousRoom;
     let knownLocations;
   let currentRoom;
   let visitedRoutes;
   let status;
+  let pN;
+  let pC;
+  let rC;
+  let rD;
+  let rE;
+  let rI;
+  let rM;
+  let rP;
+  let rID;
+  let rTE;
+  let rTI;
+  let rERR;
+
+  let pG;
+  let pE;
+  let pSTRENGTH;
+  let pSPEED;
+  let tt;
+  let st;
+  let re;
+  let mt;
+
+
     let mining = false;
   p.preload = () => {
 
@@ -259,10 +294,16 @@ class Island extends Component {
     p.setup = () => {
       canvas = p.createCanvas(1600, 2000);
       p.noStroke();
-      dom = p.select('.hello');
+      dom = p.select('.player')
       dom2 = p.select('.goodbye');
-
+      dom3 = p.select('.inventory')
+      dom4 = p.select('.current')
+      dom.mousePressed(stat)
+      dom3.mousePressed(inv)
+      dom4.mousePressed(gotIt)
+      previousRoom = '...'
     };
+
 
     function getInit(data) {
       knownLocations = data 
@@ -273,26 +314,85 @@ class Island extends Component {
           Authorization: `Token ${activePlayer}`
         }
       };
-    axios(config)
+      axios(config)
         .then(res => {
+          console.log('resssss', res.data)
         currentRoom = res.data
         })
         .catch(err => console.log('GetDataError: ', err))
       }
 
-    function stat() {
-        const config = {
-            method: 'post',
-            url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/status/',
-            headers: {
-              Authorization: `Token ${activePlayer}`
-            }
-          };
-        axios(config)
-            .then(res => {
-            status = res.data
-            })
-            .catch(err => console.log('GetDataError: ', err))
+    async function stat() {
+      pN = p.select('.pN')
+      pC = p.select('.pC')
+      pG = p.select('.pG')
+      pE = p.select('.pE')
+      pSTRENGTH = p.select('.pSTRENGTH')
+      pSPEED = p.select('.pSPEED')
+      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
+        method: 'POST', // or 'PUT'
+        headers:{
+          'Authorization': `Token ${activePlayer}`,
+        }
+      }).then(res => res.json())
+      .then(response => {
+        pN.html('name: ' + response.name)
+        pC.html('cooldown: ' + response.cooldown)
+        pG.html('gold: ' + response.gold)
+        pE.html('encumbrance: ' + response.encumbrance)
+        pSTRENGTH.html('strength: ' + response.strength)
+        pSPEED.html('speed: ' + response.speed)
+
+      
+      }
+        
+        )
+      .catch(error => console.error('Error:', error));
+    }
+
+    function clear() {
+
+    }
+
+    async function inv() {
+      tt = p.select('.tt');
+      st = p.select('.st');
+      mt = p.select('.mt');
+      let t = 0
+      let s = 0
+      let m = []
+
+      let load;
+
+      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
+        method: 'POST', // or 'PUT'
+        headers:{
+          'Authorization': `Token ${activePlayer}`,
+        }
+      }).then(res => res.json())
+      .then(response => {
+        load = Object.values(response.inventory)
+        for (let i = 0; i<load.length;i++) {
+          if (load[i] === "tiny treasure") {
+            t+=1
+          }
+          else if (load[i] === "small treasure") {
+            s+=1
+          }
+          else {
+            m.push(load[i])
+          }
+        }
+      }
+        )
+      .catch(error => console.error('Error:', error));
+      
+      m = JSON.stringify(m).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
+
+      tt.html('tiny treasure: '+ t)
+      st.html('small treasure: '+ s)
+      mt.html('misc treasure: '+ m)
+
     }
 
     function wait(ms) {
@@ -303,7 +403,17 @@ class Island extends Component {
       }
     }
 
-    function gotIt() {
+    async function gotIt() {
+      rC = p.select('.rC');
+      rD = p.select('.rD');
+      rE = p.select('.rE');
+      rI = p.select('.rI');
+      rM = p.select('.rM');
+      rP = p.select('.rP');
+      rID = p.select('.rID');
+      rTE = p.select('.rTE');
+      rTI = p.select('.rTI');
+      rERR = p.select('.rERR');
       const config = {
           method: 'get',
           url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
@@ -311,12 +421,28 @@ class Island extends Component {
             Authorization: `Token ${activePlayer}`
           }
         };
-      axios(config)
+      await axios(config)
           .then(res => {
+            let players = JSON.stringify(res.data.players).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
+            let gifts = JSON.stringify(res.data.items).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
+            let messages = JSON.stringify(res.data.messages).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
+
           currentRoom = res.data
+          rID.html('room id: ' + res.data.room_id)
+          rC.html('cooldown: ' + res.data.cooldown)
+          rD.html(res.data.description)
+          rM.html('messages: ' + messages)
+          rTI.html('title: ' + res.data.title)
+          rTE.html('terrain: ' + res.data.terrain)
+          rE.html('elevation: ' + res.data.elevation)
+          rERR.html('errors: ' + JSON.stringify(res.data.errors))
+          rP.html('players: ' + players)
+          rI.html('items: ' + gifts)
           })
           .catch(err => console.log('GetDataError: ', err))
   }
+
+  
 
     function direction(d) {
      fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', {
@@ -327,7 +453,10 @@ class Island extends Component {
         'Content-Type': 'application/json'
       }
     }).then(res => res.json())
-    .then(response => currentRoom = response)
+    .then(response => {
+      currentRoom = response
+      gotIt()
+    })
     .catch(error => console.error('Error:', error));
 }
 // curl -X POST -H 'Authorization:`Token ${activePlayer}` -H "Content-Type: application/json" -d '{"name":"denise escobar"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/
@@ -417,9 +546,7 @@ function valid_proof(last_proof, proof, proof_difficulty) {
         connections();
         treasureMap();
         words();
-        dom.html(`Current Room: ${currentRoom.room_id}`);
-        dom2.html(`Previous Room: ${previousRoom.room_id}`);
-
+        dom2.html(`Previous Room ID: ${previousRoom.room_id}`);
       }
  
 
@@ -485,9 +612,6 @@ function valid_proof(last_proof, proof, proof_difficulty) {
   render() {
     return (
       <div>
-        <h1 className="hello">{this.state.currentRoom}</h1>
-        <h1 className="goodbye">{this.state.previousRoom}</h1>
-
         <div className="flip">
           <Status />
           <P5Wrapper sketch={this.sketch} color={this.state.color}></P5Wrapper>          
