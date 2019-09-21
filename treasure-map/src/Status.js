@@ -1,8 +1,9 @@
-import './App.css';
 import React, { Component } from 'react';
 import axios from 'axios';
 
 import Player from './Player';
+import Inventory from './Inventory';
+import CurrentRoom from './CurrentRoom';
 
 
 class PlayerStatus extends React.Component{
@@ -11,7 +12,8 @@ class PlayerStatus extends React.Component{
         super(props);
         this.state = {
             playerToken : '',
-            player : {}
+            player : {},
+            inventory: []
         }
         this.inputChangeHandler = this.inputChangeHandler.bind(this)
         this.getStatus = this.getStatus.bind(this)
@@ -33,8 +35,8 @@ class PlayerStatus extends React.Component{
           };
         axios(config)
             .then(res => {
-                console.log(res.data)
-            this.setState({player:res.data})
+                console.log(Object.values(res.data.inventory))
+            this.setState({player:res.data, inventory: Object.values(res.data.inventory)})
 
             })
             .catch(err => console.log('GetDataError: ', err))
@@ -42,13 +44,24 @@ class PlayerStatus extends React.Component{
     }    
 
     render() {
+        let player = this.state.player
+        delete player.inventory
         return (
-            <div>
-                <form onSubmit={this.getStatus}>
-                    <input type="text" name = "playerToken" onChange={this.inputChangeHandler} value={this.state.playerToken} placeholder="Enter your player token!"/>
-                    <button type='submit'>Submit</button>
-                </form>
-                <Player player = {this.state.player}/>
+            <div className='status'>
+                <div className='panel'>
+                <div>
+                <Player player = {player}/>
+                </div>
+                <div>
+                <Inventory inventory = {this.state.inventory} />
+                </div>
+                <div>
+                <CurrentRoom currentRoom = {this.state.inventory} />
+                </div>
+                <div className="accordion previous">
+                <span className="goodbye">{this.state.previousRoom}</span>
+                </div>
+                </div>
             </div>
         )
     }
