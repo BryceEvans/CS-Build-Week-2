@@ -90,10 +90,10 @@ class Island extends Component {
         p.stroke('black');
         p.strokeWeight(10);
         p.line(
-          knownLocations[i]["coordinates"][0]*65-3200,
-          1999 - knownLocations[i]["coordinates"][1]*65+2900,
-          connected["coordinates"][0]*65-3200,
-          1999 - connected["coordinates"][1]*65+2900
+          knownLocations[i]["coordinates"][0]*51-2510,
+          1999 - knownLocations[i]["coordinates"][1]*51+1825,
+          connected["coordinates"][0]*51-2510,
+          1999 - connected["coordinates"][1]*51+1825
         );
       }
       }
@@ -107,9 +107,9 @@ class Island extends Component {
           p.ellipseMode(p.RADIUS);
           p.fill('blue');
           p.circle(
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900,
-            40
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825,
+            30
           );
         }
         else if (knownLocations[i].room_id === currentRoom.room_id) {
@@ -118,9 +118,9 @@ class Island extends Component {
           p.ellipseMode(p.RADIUS);
           p.fill('lime');
           p.circle(
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900,
-            25
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825,
+            20
           );
         }
         else if (knownLocations[i].title === "Shop") {
@@ -129,9 +129,9 @@ class Island extends Component {
           p.ellipseMode(p.RADIUS);
           p.fill('gold');
           p.circle(
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900,
-            18
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825,
+            15
           );
         }
 
@@ -140,9 +140,9 @@ class Island extends Component {
           p.ellipseMode(p.RADIUS);
           p.fill('red');
           p.circle(
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900,
-            18
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825,
+            15
           );
         }
         else if (knownLocations[i].title === "A Dark Cave") {
@@ -150,9 +150,9 @@ class Island extends Component {
           p.ellipseMode(p.RADIUS);
           p.fill('#484848');
           p.circle(
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900,
-            18
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825,
+            15
           );
         }
         else if (knownLocations[i].title === "Pirate Ry's") {
@@ -160,9 +160,9 @@ class Island extends Component {
           p.ellipseMode(p.RADIUS);
           p.fill('aqua');
           p.circle(
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900,
-            18
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825,
+            15
           );
         }
         else if (knownLocations[i].title !== "A misty room") {
@@ -170,9 +170,9 @@ class Island extends Component {
           p.ellipseMode(p.RADIUS);
           p.fill('white');
           p.circle(
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900,
-            18
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825,
+            15
           );
         }
 
@@ -182,9 +182,9 @@ class Island extends Component {
           p.ellipseMode(p.RADIUS);
           p.fill('silver');
           p.circle(
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900,
-            18
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825,
+            15
           );
         }
       }
@@ -194,47 +194,47 @@ class Island extends Component {
       for (let i = 0; i < knownLocations.length; i++) {
         if (knownLocations[i].room_id === 250 && mining === true) {
           p.noStroke();
-          p.textSize(16);
+          p.textSize(12);
           p.fill('white');
           p.textAlign(p.CENTER);
           p.text(
             'Mining',
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900+5
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825+4
           );
 
         }
         else if (knownLocations[i].room_id === currentRoom.room_id) {
           p.noStroke();
-          p.textSize(16);
+          p.textSize(12);
           p.fill('black');
           p.textAlign(p.CENTER);
           p.text(
             knownLocations[i].room_id,
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900+5
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825+4
           );
         }
         else if (knownLocations[i].title === "A Dark Cave" || knownLocations[i].title === "Mt. Holloway" || knownLocations[i].title === "The Peak of Mt. Holloway") {
           p.noStroke();
-          p.textSize(16);
+          p.textSize(12);
           p.fill('white');
           p.textAlign(p.CENTER);
           p.text(
             knownLocations[i].room_id,
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900+5
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825+4
           );
         }
         else {
           p.noStroke();
-          p.textSize(16);
+          p.textSize(12);
           p.fill('black');
           p.textAlign(p.CENTER);
           p.text(
             knownLocations[i].room_id,
-            knownLocations[i].coordinates[0]*65-3200,
-            1999 - knownLocations[i].coordinates[1]*65+2900+5
+            knownLocations[i].coordinates[0]*51-2510,
+            1999 - knownLocations[i].coordinates[1]*51+1825+4
           );
 
         }
@@ -292,7 +292,7 @@ class Island extends Component {
 
   }
     p.setup = () => {
-      canvas = p.createCanvas(1600, 2000);
+      canvas = p.createCanvas(1260, 1530);
       p.noStroke();
       dom = p.select('.player')
       dom2 = p.select('.goodbye');
@@ -316,7 +316,6 @@ class Island extends Component {
       };
       axios(config)
         .then(res => {
-          console.log('resssss', res.data)
         currentRoom = res.data
         })
         .catch(err => console.log('GetDataError: ', err))
@@ -546,7 +545,12 @@ function valid_proof(last_proof, proof, proof_difficulty) {
         connections();
         treasureMap();
         words();
-        dom2.html(`Previous Room ID: ${previousRoom.room_id}`);
+        if (previousRoom !== '...') {
+          dom2.html(`Previous Room ID: ${previousRoom.room_id}`);
+        }
+        else {
+          dom2.html(`Previous Room ID:`);
+        }
       }
  
 
