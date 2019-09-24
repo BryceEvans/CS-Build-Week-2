@@ -288,7 +288,7 @@ class Island extends Component {
     let mining = false;
   p.preload = () => {
 
-    p.loadJSON('http://localhost:5050/map', getInit);
+    p.loadJSON('https://schatzinsel.herokuapp.com/map', getInit);
 
   }
     p.setup = () => {
