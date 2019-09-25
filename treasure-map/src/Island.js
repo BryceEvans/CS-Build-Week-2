@@ -23,7 +23,7 @@ import './SASS/App.sass';
 //   }
 
 
-
+// 'https://schatzinsel.herokuapp.com/map
 
 class Room {
   constructor(
