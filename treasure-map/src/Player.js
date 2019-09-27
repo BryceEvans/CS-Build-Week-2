@@ -4,7 +4,7 @@ import './SASS/App.sass';
 
 export default props => {
     return (
-        <div className="accordion player">
+        <div className="accordion player" token='4444'>
             <Collapsible trigger={'Player Status ⬇'}>
                 <h4 className='pN'>name:</h4>
                 <h4 className='pC'>cooldown:</h4>
