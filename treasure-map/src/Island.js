@@ -68,9 +68,10 @@ const activePlayer = '3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9'
 // curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"treasure"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/
 // curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"treasure", "confirm":"yes"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/
 class Island extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      token: this.props.location.state.token,
       currentRoom: {room_id: 22222},
       previousRoom: '...'
     };
@@ -98,6 +99,7 @@ class Island extends Component {
       }
       }
     }
+    
 
     function treasureMap() {
       for (let i = 0; i < knownLocations.length; i++) {
@@ -283,17 +285,19 @@ class Island extends Component {
   let st;
   let re;
   let mt;
-
+  let TOKEN;
 
     let mining = false;
   p.preload = () => {
+    TOKEN = document.getElementsByClassName("map")[0].getAttribute('token')
 
-    p.loadJSON('https://schatzinsel.herokuapp.com/map', getInit);
+      p.loadJSON('https://schatzinsel.herokuapp.com/map', getInit);
 
   }
     p.setup = () => {
       canvas = p.createCanvas(1260, 1530);
       p.noStroke();
+
       dom = p.select('.player')
       dom2 = p.select('.goodbye');
       dom3 = p.select('.inventory')
@@ -302,6 +306,9 @@ class Island extends Component {
       dom3.mousePressed(inv)
       dom4.mousePressed(gotIt)
       previousRoom = '...'
+
+      console.log('help', TOKEN)
+
     };
 
 
@@ -311,7 +318,7 @@ class Island extends Component {
         method: 'get',
         url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
         headers: {
-          Authorization: `Token ${activePlayer}`
+          Authorization: `Token ${TOKEN}`
         }
       };
       axios(config)
@@ -331,7 +338,7 @@ class Island extends Component {
       await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
         method: 'POST', // or 'PUT'
         headers:{
-          'Authorization': `Token ${activePlayer}`,
+          'Authorization': `Token ${TOKEN}`,
         }
       }).then(res => res.json())
       .then(response => {
@@ -366,7 +373,7 @@ class Island extends Component {
       await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
         method: 'POST', // or 'PUT'
         headers:{
-          'Authorization': `Token ${activePlayer}`,
+          'Authorization': `Token ${TOKEN}`,
         }
       }).then(res => res.json())
       .then(response => {
@@ -417,9 +424,10 @@ class Island extends Component {
           method: 'get',
           url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
           headers: {
-            Authorization: `Token ${activePlayer}`
+            Authorization: `Token ${TOKEN}`
           }
         };
+
       await axios(config)
           .then(res => {
             let players = JSON.stringify(res.data.players).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
@@ -448,17 +456,19 @@ class Island extends Component {
       method: 'POST', // or 'PUT'
       body: JSON.stringify({direction: d}), // data can be `string` or {object}!
       headers:{
-        'Authorization': `Token ${activePlayer}`,
+        'Authorization': `Token ${TOKEN}`,
         'Content-Type': 'application/json'
       }
     }).then(res => res.json())
     .then(response => {
       currentRoom = response
+      console.log('Arrr', response)
+      wait(response.cooldown*1000+1000)
       gotIt()
     })
     .catch(error => console.error('Error:', error));
 }
-// curl -X POST -H 'Authorization:`Token ${activePlayer}` -H "Content-Type: application/json" -d '{"name":"denise escobar"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/
+// curl -X POST -H 'Authorization:`Token ${TOKEN}` -H "Content-Type: application/json" -d '{"name":"denise escobar"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/
 
 
 async function proof_of_work() {
@@ -472,7 +482,7 @@ async function proof_of_work() {
   await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/last_proof/', {
     method: 'GET', // or 'PUT'
     headers:{
-      'Authorization': `Token ${activePlayer}`,
+      'Authorization': `Token ${TOKEN}`,
     }
   }).then(res => res.json())
   .then(response => {
@@ -481,7 +491,7 @@ async function proof_of_work() {
     cooldown = response.cooldown
   })
   .catch(error => console.error('Error:', error));
-  // curl -X GET -H 'Authorization:`Token ${activePlayer}` https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
+  // curl -X GET -H 'Authorization:`Token ${TOKEN}` https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
   let proof = 4
 
   while (valid_proof(last_proof, proof, difficulty) === false) {
@@ -498,7 +508,7 @@ async function proof_of_work() {
     method: 'POST', // or 'PUT'
     body: JSON.stringify({proof: solution}), // data can be `string` or {object}!
     headers:{
-      'Authorization': `Token ${activePlayer}`,
+      'Authorization': `Token ${TOKEN}`,
     }
   }).then(res => res.json())
   .then(response => console.log(response.messages[0]))
@@ -508,7 +518,7 @@ async function proof_of_work() {
   await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/', {
     method: 'GET', // or 'PUT'
     headers:{
-      'Authorization': `Token ${activePlayer}`,
+      'Authorization': `Token ${TOKEN}`,
     }
   }).then(res => res.json())
   .then(response => {
@@ -518,7 +528,7 @@ async function proof_of_work() {
   mining = false;
   p.redraw(1);
 }
-// curl -X GET -H 'Authorization:`Token ${activePlayer}` https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
+// curl -X GET -H 'Authorization:`Token ${TOKEN}` https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
 
   
 function valid_proof(last_proof, proof, proof_difficulty) {
@@ -607,16 +617,18 @@ function valid_proof(last_proof, proof, proof_difficulty) {
     };
 
     p.myCustomRedrawAccordingToNewPropsHandler = newProps => {
-      if (canvas)
+      // if (canvas) {
+      //   TOKEN = newProps.token
+      //   console.log('TOKEN', TOKEN)
+      // }
         //Make sure the canvas has been created
-        p.fill(newProps.color);
     };
   }
 
   render() {
     return (
       <div>
-        <div className="flip">
+        <div className="flip map" token={this.state.token}>
           <Status />
           <P5Wrapper sketch={this.sketch} color={this.state.color}></P5Wrapper>          
         </div>

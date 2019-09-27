@@ -1,0 +1,85 @@
+
+@keyframes shine
+    0%
+        background-image: linear-gradient(45deg, gold)
+    10%
+        background-image: linear-gradient(45deg, white 5%, gold 15%, gold)
+    20%
+        background-image: linear-gradient(45deg, gold 5%, white 15%, white 20%, gold 30%, gold)
+    30%
+        background-image: linear-gradient(45deg, gold 15%, white 25%, white 30%, gold 40%, gold)
+    40%
+        background-image: linear-gradient(45deg, gold 25%, white 35%, white 40%, gold 50%, gold)
+    50%
+        background-image: linear-gradient(45deg, gold 35%, white 45%, white 50%, gold 60%, gold)
+    60%
+        background-image: linear-gradient(45deg, gold 45%, white 55%, white 60%, gold 70%, gold)
+    70%
+        background-image: linear-gradient(45deg, gold 55%, white 65%, white 70%, gold 80%, gold)
+    80%
+        background-image: linear-gradient(45deg, gold 65%, white 75%, white 80%, gold 90%, gold)
+    90%
+        background-image: linear-gradient(45deg, gold 75%, white 85%, white 90%, gold 100%, gold)
+    100%
+        background-image: linear-gradient(45deg, gold 85%, white 95%, white 100%, gold 100%, gold)
+
+
+.Login
+    width: 100%
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    background-image: linear-gradient(to top, white, white , aqua)
+    img
+        margin-top: 50px
+        width: 20%
+    h1
+        font-size: 6rem
+        margin: 0
+    
+    form
+        width: 40%
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        div
+            display: flex
+            justify-content: space-between
+
+            h2
+                padding: 5px
+                margin: 5px
+                font-size: 1.25rem
+            input
+                padding: 5px
+                width: 365px
+                margin: 5px
+                font-size: 1rem
+    
+    .dropdown
+        display: flex
+        width: 40%
+        justify-content: space-between
+        h2
+            padding: 5px
+            margin: 5px
+            font-size: 1.25rem
+        select
+            width: 50%
+            font-size: 1rem
+            margin-right: 5px
+            padding: 0
+
+
+
+button
+    margin-top: 20px
+    background-color: gold
+    font-size: 2rem
+
+button:hover
+    border: 2px solid black
+    animation-name: shine
+    animation-duration: 1s
+    animation-timing-function: ease-in-out;
