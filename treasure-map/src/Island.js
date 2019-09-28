@@ -4,6 +4,8 @@ import p5 from 'p5';
 import 'p5/lib/addons/p5.dom';
 import 'p5/lib/addons/p5.sound';
 import Status from './Status'
+import Actions from './Actions'
+
 import axios from 'axios'
 import qs from 'qs'
 import {sha256} from 'js-sha256'
@@ -630,7 +632,8 @@ function valid_proof(last_proof, proof, proof_difficulty) {
       <div>
         <div className="flip map" token={this.state.token}>
           <Status />
-          <P5Wrapper sketch={this.sketch} color={this.state.color}></P5Wrapper>          
+          <P5Wrapper sketch={this.sketch} color={this.state.color}></P5Wrapper>
+          <Actions />
         </div>
       </div>
     );
