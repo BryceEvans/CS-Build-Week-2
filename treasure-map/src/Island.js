@@ -94,9 +94,9 @@ class Island extends Component {
         p.strokeWeight(10);
         p.line(
           knownLocations[i]["coordinates"][0]*51-2510,
-          1999 - knownLocations[i]["coordinates"][1]*51+1825,
+          1999 - knownLocations[i]["coordinates"][1]*51+1875,
           connected["coordinates"][0]*51-2510,
-          1999 - connected["coordinates"][1]*51+1825
+          1999 - connected["coordinates"][1]*51+1875
         );
       }
       }
@@ -112,7 +112,7 @@ class Island extends Component {
           p.fill('blue');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825,
+            1999 - knownLocations[i].coordinates[1]*51+1875,
             30
           );
         }
@@ -123,7 +123,7 @@ class Island extends Component {
           p.fill('lime');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825,
+            1999 - knownLocations[i].coordinates[1]*51+1875,
             20
           );
         }
@@ -134,7 +134,7 @@ class Island extends Component {
           p.fill('gold');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825,
+            1999 - knownLocations[i].coordinates[1]*51+1875,
             15
           );
         }
@@ -145,7 +145,7 @@ class Island extends Component {
           p.fill('red');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825,
+            1999 - knownLocations[i].coordinates[1]*51+1875,
             15
           );
         }
@@ -155,7 +155,7 @@ class Island extends Component {
           p.fill('#484848');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825,
+            1999 - knownLocations[i].coordinates[1]*51+1875,
             15
           );
         }
@@ -165,7 +165,7 @@ class Island extends Component {
           p.fill('aqua');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825,
+            1999 - knownLocations[i].coordinates[1]*51+1875,
             15
           );
         }
@@ -175,7 +175,7 @@ class Island extends Component {
           p.fill('white');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825,
+            1999 - knownLocations[i].coordinates[1]*51+1875,
             15
           );
         }
@@ -187,7 +187,7 @@ class Island extends Component {
           p.fill('silver');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825,
+            1999 - knownLocations[i].coordinates[1]*51+1875,
             15
           );
         }
@@ -204,7 +204,7 @@ class Island extends Component {
           p.text(
             'Mining',
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825+4
+            1999 - knownLocations[i].coordinates[1]*51+1875+4
           );
 
         }
@@ -216,7 +216,7 @@ class Island extends Component {
           p.text(
             knownLocations[i].room_id,
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825+4
+            1999 - knownLocations[i].coordinates[1]*51+1875+4
           );
         }
         else if (knownLocations[i].title === "A Dark Cave" || knownLocations[i].title === "Mt. Holloway" || knownLocations[i].title === "The Peak of Mt. Holloway") {
@@ -227,7 +227,7 @@ class Island extends Component {
           p.text(
             knownLocations[i].room_id,
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825+4
+            1999 - knownLocations[i].coordinates[1]*51+1875+4
           );
         }
         else {
@@ -238,7 +238,7 @@ class Island extends Component {
           p.text(
             knownLocations[i].room_id,
             knownLocations[i].coordinates[0]*51-2510,
-            1999 - knownLocations[i].coordinates[1]*51+1825+4
+            1999 - knownLocations[i].coordinates[1]*51+1875+4
           );
 
         }
@@ -300,7 +300,7 @@ class Island extends Component {
 
   }
     p.setup = () => {
-      canvas = p.createCanvas(1260, 1530);
+      canvas = p.createCanvas(1260, 1600);
       p.noStroke();
 
       dom = p.select('.player')
@@ -647,9 +647,9 @@ function valid_proof(last_proof, proof, proof_difficulty) {
     return (
       <div>
         <div className="flip map" token={this.state.token}>
-          <Status />
+          <Status className='stat' />
           <P5Wrapper className='island' sketch={this.sketch} color={this.state.color}></P5Wrapper>
-          <Actions />
+          <Actions className='act' />
         </div>
       </div>
     );
