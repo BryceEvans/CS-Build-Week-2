@@ -288,6 +288,9 @@ class Island extends Component {
   let re;
   let mt;
   let TOKEN;
+  let road;
+  let shop;
+  let name;
 
     let mining = false;
   p.preload = () => {
@@ -304,6 +307,13 @@ class Island extends Component {
       dom2 = p.select('.goodbye');
       dom3 = p.select('.inventory')
       dom4 = p.select('.current')
+      road = p.select('.road-b')
+      shop = p.select('.shop-b')
+      name = p.select('.name-b')
+
+      shop.mousePressed(() => offen('shop'))
+      road.mousePressed(() => offen('road'))
+      name.mousePressed(() => offen('new-name'))
       dom.mousePressed(stat)
       dom3.mousePressed(inv)
       dom4.mousePressed(gotIt)
@@ -329,6 +339,12 @@ class Island extends Component {
         })
         .catch(err => console.log('GetDataError: ', err))
       }
+
+      function offen(c) {
+        let r = document.getElementsByClassName(c)[0]
+        r.classList.toggle("open")
+        console.log('ROAD is working!')
+        }
 
     async function stat() {
       pN = p.select('.pN')
@@ -632,7 +648,7 @@ function valid_proof(last_proof, proof, proof_difficulty) {
       <div>
         <div className="flip map" token={this.state.token}>
           <Status />
-          <P5Wrapper sketch={this.sketch} color={this.state.color}></P5Wrapper>
+          <P5Wrapper className='island' sketch={this.sketch} color={this.state.color}></P5Wrapper>
           <Actions />
         </div>
       </div>

@@ -50,7 +50,7 @@ class Actions extends React.Component{
         return (
             <div className='actions'>
                 <div>
-                <form>
+                <form className='road'>
                     <select className='selection' onChange={this.getValue} onClick={this.getValue}>
                         <option value='Examine'>Examine</option>
                         <option value='Take'>Take</option>
@@ -58,64 +58,69 @@ class Actions extends React.Component{
                         <option value='Wear'>Wear</option>
                     </select>
                     <input></input>
+                    <h4>Submit</h4>
                 </form>
-                <button className='isle-buttons'>On the Road</button>
+                <button className='isle-buttons road-b'>On the Road</button>
                 </div>
 
                 <div>
-                <form>
+                <form className='shop'>
                 <select className='selection' onChange={this.getValue} onClick={this.getValue}>
                         <option value='Examine'>Sell</option>
                         <option value='Take'>Confirm Sale Of</option>
                 </select>                    
                 <input></input>
+                <h4>Submit</h4>
                 </form>
-                <button className='isle-buttons'>Shop</button>
+                <button className='isle-buttons shop-b'>Shop</button>
                 </div>
 
                 <div>
-                <form>
+                <form className='new-name'>
                     <select className='selection' onChange={this.getValue} onClick={this.getValue}>
                         <option value='New Name'>New Name</option>
                         <option value='Confirm Name'>Confirm Sale Of</option>
-                    </select>                      <input></input>
+                    </select>                      
+                    <input></input>
+                    <h4>Submit</h4>
                 </form>
-                <button className='isle-buttons'>Change Name</button>
+                <button className='isle-buttons name-b'>Change Name</button>
                 </div>
 
                 <div>
-                <form>
+                <form className='mining'>
                     <h4>Mining...</h4>
                     <h5>...</h5>
                 </form>
-                <button className='isle-buttons'>Mine</button>
+                <button className='isle-buttons mine-b'>Mine</button>
                 </div>
 
                 <div>
-                <form>
+                <form className='pray'>
                     <h4>Pray</h4>
                     <h5>...</h5>
                 </form>
-                <button className='isle-buttons'>Pray</button>
+                <button className='isle-buttons pray-b'>Pray</button>
                 </div>
 
                 <div>
-                <form>
+                <form className='abilities'>
                     <select className='selection' onChange={this.getValue} onClick={this.getValue}>
                         <option value='Fly'>Fly</option>
                         <option value='Dash'>Dash</option>
                     </select>                      
                     <input></input>
                 </form>
-                <button className='isle-buttons'>Abilities</button>
+                <button className='isle-buttons abilities-b'>Abilities</button>
                 </div>
 
                 <div>
-                <form>
+                <form className='transmorgify'>
                     <h4>Transform</h4>
                     <input></input>
+                    <h4>Submit</h4>
                 </form>
-                <button className='isle-buttons'>Transmorgify</button>
+                <button className='isle-buttons transmorgify-b'>Transmorgify</button>
                 </div>
 
             </div>
