@@ -88,9 +88,8 @@ class Actions extends React.Component{
                 </div>
 
                 <div>
-                <form className='mining'>
-                    <h4>Mining...</h4>
-                    <h5>...</h5>
+                <form className='mine'>
+                    <h3 className='mining'>Mining...</h3>
                 </form>
                 <button className='isle-buttons mine-b'>Mine</button>
                 </div>
