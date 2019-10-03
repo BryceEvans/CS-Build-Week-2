@@ -57,20 +57,21 @@ class Actions extends React.Component{
                         <option value='Drop'>Drop</option>
                         <option value='Wear'>Wear</option>
                     </select>
-                    <input></input>
-                    <h4>Submit</h4>
+                    <input className='road-input'></input>
+                    <h4 className='road-submit'>Submit</h4>
+                    <h5 className='road-status'> Status: </h5>
                 </form>
                 <button className='isle-buttons road-b'>On the Road</button>
                 </div>
 
                 <div>
                 <form className='shop'>
-                <select className='selection' onChange={this.getValue} onClick={this.getValue}>
-                        <option value='Examine'>Sell</option>
-                        <option value='Take'>Confirm Sale Of</option>
-                </select>                    
-                <input></input>
-                <h4>Submit</h4>
+                    <select className='selection' onChange={this.getValue} onClick={this.getValue}>
+                            <option value='Examine'>Sell</option>
+                            <option value='Take'>Confirm Sale Of</option>
+                    </select>                    
+                    <input className ='shop-input'></input>
+                    <h4 className='shop-submit'>Submit</h4>
                 </form>
                 <button className='isle-buttons shop-b'>Shop</button>
                 </div>
@@ -82,7 +83,7 @@ class Actions extends React.Component{
                         <option value='Confirm Name'>Confirm Sale Of</option>
                     </select>                      
                     <input></input>
-                    <h4>Submit</h4>
+                    <h4 className='name-submit'>Submit</h4>
                 </form>
                 <button className='isle-buttons name-b'>Change Name</button>
                 </div>

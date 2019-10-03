@@ -293,6 +293,7 @@ class Island extends Component {
   let name;
   let mine;
   let minetext;
+  let road_submit;
 
     let mining = false;
   p.preload = () => {
@@ -313,23 +314,121 @@ class Island extends Component {
       shop = p.select('.shop-b')
       name = p.select('.name-b')
       mine = p.select('.mine-b')
-
+      road_submit = p.select('.road-submit')
 
       shop.mousePressed(() => offen('shop'))
       road.mousePressed(() => offen('road'))
       name.mousePressed(() => offen('new-name'))
       mine.mousePressed(() => miner('mine'))
+    
+      road_submit.mousePressed(roading)
 
       dom.mousePressed(stat)
       dom3.mousePressed(inv)
       dom4.mousePressed(gotIt)
       previousRoom = '...'
-
-      console.log('help', minetext)
-
     };
 
+    async function roading() {
+      let s_value = document.getElementsByClassName('selection')[0].value
+      let i_value = document.getElementsByClassName('road-input')[0].value
+      let road_status = p.select('.road-status')
 
+      if (s_value === 'Take') {
+
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/take/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          },
+          body: JSON.stringify({name: i_value})
+        }).then(res => res.json())
+        .then(response => {
+            if (response.messages.length !== 0) {
+              let inventory = document.getElementsByClassName('inventory')[0]
+              inventory.classList.toggle("open")
+              let c = document.getElementsByClassName('current')[0]
+              c.classList.toggle("open")
+              wait(5000)
+              inv()
+              wait(5000)
+              gotIt()
+            }
+            if (response.messages.length !== 0) {
+              road_status.html(`Status: ${response.messages}`)
+              console.log('res', response.messages)
+            }
+  
+            else {
+              road_status.html(`Status: You cannot take this item`)
+              console.log('none', response.messages.length)
+            }
+        }
+          )
+        .catch(error => console.error('Error:', error));
+
+
+      }
+
+      else if (s_value === 'Drop') {
+
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          },
+          body: JSON.stringify({name: i_value})
+        }).then(res => res.json())
+        .then(response => {
+          if (response.messages.length !== 0) {
+            let inventory = document.getElementsByClassName('inventory')[0]
+            inventory.classList.toggle("open")
+            let c = document.getElementsByClassName('current')[0]
+            c.classList.toggle("open")
+            wait(5000)
+            inv()
+            wait(5000)
+            gotIt()
+          }
+          if (response.messages.length !== 0) {
+            road_status.html(`Status: ${response.messages}`)
+            console.log('res', response.messages)
+          }
+
+          else {
+            road_status.html(`Status: You cannot drop this item.`)
+            console.log('none', response.messages.length)
+          }
+          
+        }
+          )
+        .catch(error => console.error('Error:', error));
+      }
+
+    else if (s_value === 'Examine') {
+      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/', {
+        method: 'POST', // or 'PUT'
+        headers:{
+          'Authorization': `Token ${TOKEN}`,
+        },
+        body: JSON.stringify({name: i_value})
+      }).then(res => res.json())
+      .then(response => {
+        if (response.hasOwnProperty('room_id') === false) {
+          road_status.html(`Status: ${response.description}`)
+          console.log('res', response)
+        }
+
+        else {
+          road_status.html(`Status: You cannot examine this item.`)
+          console.log('none', response.messages.length)
+        }
+      }
+        )
+      .catch(error => console.error('Error:', error));
+
+    }
+    }
     function getInit(data) {
       knownLocations = data 
       const config = {
@@ -495,12 +594,9 @@ class Island extends Component {
     }
 
     async function gotIt() {
-      console.log('outer')
       let c = document.getElementsByClassName('current')[0]
       c.classList.toggle("open")
       if (c.classList.contains("open")) {
-        console.log('inner')
-
           rC = p.select('.rC');
           rD = p.select('.rD');
           rE = p.select('.rE');
