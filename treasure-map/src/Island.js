@@ -291,6 +291,8 @@ class Island extends Component {
   let road;
   let shop;
   let name;
+  let mine;
+  let minetext;
 
     let mining = false;
   p.preload = () => {
@@ -310,16 +312,20 @@ class Island extends Component {
       road = p.select('.road-b')
       shop = p.select('.shop-b')
       name = p.select('.name-b')
+      mine = p.select('.mine-b')
+
 
       shop.mousePressed(() => offen('shop'))
       road.mousePressed(() => offen('road'))
       name.mousePressed(() => offen('new-name'))
+      mine.mousePressed(() => miner('mine'))
+
       dom.mousePressed(stat)
       dom3.mousePressed(inv)
       dom4.mousePressed(gotIt)
       previousRoom = '...'
 
-      console.log('help', TOKEN)
+      console.log('help', minetext)
 
     };
 
@@ -345,6 +351,45 @@ class Island extends Component {
         r.classList.toggle("open")
         console.log('ROAD is working!')
         }
+
+      async function miner(c) {
+          let mineB = document.getElementsByClassName('mine')[0]
+          minetext = document.getElementsByClassName('mining')[0]
+
+          let r = document.getElementsByClassName(c)[0]
+          r.classList.toggle("open")  
+
+          if ((mineB.classList.contains('open') === false && mineB.style.backgroundColor === 'blue') || (mineB.classList.contains('open') === false && mineB.style.backgroundColor === 'gold' && currentRoom.room_id === 250)) {
+            r.classList.toggle("open")  
+          }
+       
+          if (mineB.classList.contains('open') === true || currentRoom.room_id === 250) {
+            console.log('it entered in')
+
+            if (currentRoom.room_id === 250) {
+              mineB.style.backgroundColor = "blue"
+              minetext.style.color = "white"
+              minetext.innerHTML = 'MINING...'
+              proof_of_work()
+            }
+            else  {
+              mineB.style.backgroundColor = "gold"
+              minetext.style.color = "black"
+              minetext.innerHTML = 'YOU CANNOT MINE IN THIS ROOM!'
+              await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/', {
+                method: 'GET', // or 'PUT'
+                headers:{
+                  'Authorization': `Token ${TOKEN}`,
+                }
+              }).then(res => res.json())
+              .then(response => {
+                wait(3000)
+                minetext.innerHTML = response.messages[0]
+              })
+              .catch(error => console.error('Error:', error));
+            }
+          }
+          }
 
     async function stat() {
       pN = p.select('.pN')
@@ -494,6 +539,8 @@ async function proof_of_work() {
   let difficulty;
   let solution;
   let cooldown;
+  minetext = document.getElementsByClassName('mining')[0]
+
   mining = true;
   p.redraw(1);
 
@@ -529,7 +576,7 @@ async function proof_of_work() {
       'Authorization': `Token ${TOKEN}`,
     }
   }).then(res => res.json())
-  .then(response => console.log(response.messages[0]))
+  .then(response => console.log(minetext.innerHTML = response.messages[0]))
   .catch(error => console.error('Error:', error));
 
   wait(15000)
@@ -540,7 +587,7 @@ async function proof_of_work() {
     }
   }).then(res => res.json())
   .then(response => {
-    console.log(response.messages[0])
+    minetext.innerHTML = response.messages[0]
   })
   .catch(error => console.error('Error:', error));
   mining = false;
@@ -600,10 +647,10 @@ function valid_proof(last_proof, proof, proof_difficulty) {
         direction("s");
       }
       else if (p.keyCode === p.ENTER && currentRoom.room_id === 250) {
-        proof_of_work()
+        miner('mine')
       }
       else if (p.keyCode === p.ENTER && currentRoom.room_id !== 250) {
-        console.log('YOU CANNOT MINE IN THIS ROOM!')
+        miner('mine')
       }
       else if (
         p.keyCode === p.UP_ARROW &&
