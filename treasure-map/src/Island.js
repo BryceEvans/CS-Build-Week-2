@@ -392,31 +392,44 @@ class Island extends Component {
           }
 
     async function stat() {
-      pN = p.select('.pN')
-      pC = p.select('.pC')
-      pG = p.select('.pG')
-      pE = p.select('.pE')
-      pSTRENGTH = p.select('.pSTRENGTH')
-      pSPEED = p.select('.pSPEED')
-      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
-        method: 'POST', // or 'PUT'
-        headers:{
-          'Authorization': `Token ${TOKEN}`,
-        }
-      }).then(res => res.json())
-      .then(response => {
-        pN.html('name: ' + response.name)
-        pC.html('cooldown: ' + response.cooldown)
-        pG.html('gold: ' + response.gold)
-        pE.html('encumbrance: ' + response.encumbrance)
-        pSTRENGTH.html('strength: ' + response.strength)
-        pSPEED.html('speed: ' + response.speed)
+      let s = document.getElementsByClassName('player')[0]
+      s.classList.toggle("open")
 
-      
-      }
+      if (s.classList.contains('open')) {
+   
+        pN = p.select('.pN')
+        pC = p.select('.pC')
+        pG = p.select('.pG')
+        pE = p.select('.pE')
+        pSTRENGTH = p.select('.pSTRENGTH')
+        pSPEED = p.select('.pSPEED')
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          }
+        }).then(res => res.json())
+        .then(response => {
+          pN.html('name: ' + response.name)
+          pC.html('cooldown: ' + response.cooldown)
+          pG.html('gold: ' + response.gold)
+          pE.html('encumbrance: ' + response.encumbrance)
+          pSTRENGTH.html('strength: ' + response.strength)
+          pSPEED.html('speed: ' + response.speed)
+  
         
-        )
-      .catch(error => console.error('Error:', error));
+        }
+          
+          )
+        .catch(error => console.error('Error:', error));
+
+
+
+
+
+
+
+      }
     }
 
     function clear() {
@@ -424,44 +437,53 @@ class Island extends Component {
     }
 
     async function inv() {
-      tt = p.select('.tt');
-      st = p.select('.st');
-      mt = p.select('.mt');
-      let t = 0
-      let s = 0
-      let m = []
+      let inventory = document.getElementsByClassName('inventory')[0]
+      inventory.classList.toggle("open")
+      if (inventory.classList.contains("open")) {
 
-      let load;
+        tt = p.select('.tt');
+        st = p.select('.st');
+        mt = p.select('.mt');
+        let t = 0
+        let s = 0
+        let m = []
+  
+        let load;
+  
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          }
+        }).then(res => res.json())
+        .then(response => {
+          load = Object.values(response.inventory)
+          for (let i = 0; i<load.length;i++) {
+            if (load[i] === "tiny treasure") {
+              t+=1
+            }
+            else if (load[i] === "small treasure") {
+              s+=1
+            }
+            else {
+              m.push(load[i])
+            }
+          }
+        }
+          )
+        .catch(error => console.error('Error:', error));
+        
+        m = JSON.stringify(m).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
+  
+        tt.html('tiny treasure: '+ t)
+        st.html('small treasure: '+ s)
+        mt.html('misc treasure: '+ m)
 
-      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
-        method: 'POST', // or 'PUT'
-        headers:{
-          'Authorization': `Token ${TOKEN}`,
-        }
-      }).then(res => res.json())
-      .then(response => {
-        load = Object.values(response.inventory)
-        for (let i = 0; i<load.length;i++) {
-          if (load[i] === "tiny treasure") {
-            t+=1
-          }
-          else if (load[i] === "small treasure") {
-            s+=1
-          }
-          else {
-            m.push(load[i])
-          }
-        }
+
+
+
+
       }
-        )
-      .catch(error => console.error('Error:', error));
-      
-      m = JSON.stringify(m).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
-
-      tt.html('tiny treasure: '+ t)
-      st.html('small treasure: '+ s)
-      mt.html('misc treasure: '+ m)
-
     }
 
     function wait(ms) {
@@ -473,48 +495,57 @@ class Island extends Component {
     }
 
     async function gotIt() {
-      rC = p.select('.rC');
-      rD = p.select('.rD');
-      rE = p.select('.rE');
-      rI = p.select('.rI');
-      rM = p.select('.rM');
-      rP = p.select('.rP');
-      rID = p.select('.rID');
-      rTE = p.select('.rTE');
-      rTI = p.select('.rTI');
-      rERR = p.select('.rERR');
-      const config = {
-          method: 'get',
-          url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
-          headers: {
-            Authorization: `Token ${TOKEN}`
-          }
-        };
+      console.log('outer')
+      let c = document.getElementsByClassName('current')[0]
+      c.classList.toggle("open")
+      if (c.classList.contains("open")) {
+        console.log('inner')
 
-      await axios(config)
-          .then(res => {
-            let players = JSON.stringify(res.data.players).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
-            let gifts = JSON.stringify(res.data.items).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
-            let messages = JSON.stringify(res.data.messages).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
+          rC = p.select('.rC');
+          rD = p.select('.rD');
+          rE = p.select('.rE');
+          rI = p.select('.rI');
+          rM = p.select('.rM');
+          rP = p.select('.rP');
+          rID = p.select('.rID');
+          rTE = p.select('.rTE');
+          rTI = p.select('.rTI');
+          rERR = p.select('.rERR');
+          const config = {
+              method: 'get',
+              url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
+              headers: {
+                Authorization: `Token ${TOKEN}`
+              }
+            };
 
-          currentRoom = res.data
-          rID.html('room id: ' + res.data.room_id)
-          rC.html('cooldown: ' + res.data.cooldown)
-          rD.html(res.data.description)
-          rM.html('messages: ' + messages)
-          rTI.html('title: ' + res.data.title)
-          rTE.html('terrain: ' + res.data.terrain)
-          rE.html('elevation: ' + res.data.elevation)
-          rERR.html('errors: ' + JSON.stringify(res.data.errors))
-          rP.html('players: ' + players)
-          rI.html('items: ' + gifts)
-          })
-          .catch(err => console.log('GetDataError: ', err))
+          await axios(config)
+              .then(res => {
+                let players = JSON.stringify(res.data.players).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
+                let gifts = JSON.stringify(res.data.items).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
+                let messages = JSON.stringify(res.data.messages).replace(/\[?["](\w*\d*\s*\w*\d*)["][,]?\]?/g, '|  $1  |')
+
+              currentRoom = res.data
+              rID.html('room id: ' + res.data.room_id)
+              rC.html('cooldown: ' + res.data.cooldown)
+              rD.html(res.data.description)
+              rM.html('messages: ' + messages)
+              rTI.html('title: ' + res.data.title)
+              rTE.html('terrain: ' + res.data.terrain)
+              rE.html('elevation: ' + res.data.elevation)
+              rERR.html('errors: ' + JSON.stringify(res.data.errors))
+              rP.html('players: ' + players)
+              rI.html('items: ' + gifts)
+              })
+              .catch(err => console.log('GetDataError: ', err))
+        }
   }
 
   
 
     function direction(d) {
+      let c = document.getElementsByClassName('current')[0]
+      c.classList.toggle("open")
      fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', {
       method: 'POST', // or 'PUT'
       body: JSON.stringify({direction: d}), // data can be `string` or {object}!
