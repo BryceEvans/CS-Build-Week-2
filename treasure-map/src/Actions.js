@@ -51,7 +51,7 @@ class Actions extends React.Component{
             <div className='actions'>
                 <div>
                 <form className='road'>
-                    <select className='selection' onChange={this.getValue} onClick={this.getValue}>
+                    <select className='road-selection' onChange={this.getValue} onClick={this.getValue}>
                         <option value='Examine'>Examine</option>
                         <option value='Take'>Take</option>
                         <option value='Drop'>Drop</option>
@@ -66,12 +66,13 @@ class Actions extends React.Component{
 
                 <div>
                 <form className='shop'>
-                    <select className='selection' onChange={this.getValue} onClick={this.getValue}>
-                            <option value='Examine'>Sell</option>
-                            <option value='Take'>Confirm Sale Of</option>
+                    <select className='shop-selection' onChange={this.getValue} onClick={this.getValue}>
+                            <option value='Sell'>Sell</option>
+                            <option value='Confirm'>Confirm Sale Of</option>
                     </select>                    
                     <input className ='shop-input'></input>
                     <h4 className='shop-submit'>Submit</h4>
+                    <h5 className='shop-status'> Status: </h5>
                 </form>
                 <button className='isle-buttons shop-b'>Shop</button>
                 </div>
