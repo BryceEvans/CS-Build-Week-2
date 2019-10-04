@@ -294,6 +294,7 @@ class Island extends Component {
   let mine;
   let minetext;
   let road_submit;
+  let shop_submit;
 
     let mining = false;
   p.preload = () => {
@@ -315,6 +316,7 @@ class Island extends Component {
       name = p.select('.name-b')
       mine = p.select('.mine-b')
       road_submit = p.select('.road-submit')
+      shop_submit = p.select('.shop-submit')
 
       shop.mousePressed(() => offen('shop'))
       road.mousePressed(() => offen('road'))
@@ -322,6 +324,7 @@ class Island extends Component {
       mine.mousePressed(() => miner('mine'))
     
       road_submit.mousePressed(roading)
+      shop_submit.mousePressed(shopping)
 
       dom.mousePressed(stat)
       dom3.mousePressed(inv)
@@ -330,7 +333,7 @@ class Island extends Component {
     };
 
     async function roading() {
-      let s_value = document.getElementsByClassName('selection')[0].value
+      let s_value = document.getElementsByClassName('road-selection')[0].value
       let i_value = document.getElementsByClassName('road-input')[0].value
       let road_status = p.select('.road-status')
 
@@ -349,10 +352,14 @@ class Island extends Component {
               inventory.classList.toggle("open")
               let c = document.getElementsByClassName('current')[0]
               c.classList.toggle("open")
+              let s = document.getElementsByClassName('player')[0]
+              s.classList.toggle("open")
               wait(5000)
               inv()
-              wait(5000)
+              wait(15000)
               gotIt()
+              wait(5000)
+              stat()
             }
             if (response.messages.length !== 0) {
               road_status.html(`Status: ${response.messages}`)
@@ -385,10 +392,14 @@ class Island extends Component {
             inventory.classList.toggle("open")
             let c = document.getElementsByClassName('current')[0]
             c.classList.toggle("open")
+            let s = document.getElementsByClassName('player')[0]
+            s.classList.toggle("open")
             wait(5000)
             inv()
             wait(5000)
             gotIt()
+            wait(5000)
+            stat()
           }
           if (response.messages.length !== 0) {
             road_status.html(`Status: ${response.messages}`)
@@ -428,6 +439,92 @@ class Island extends Component {
       .catch(error => console.error('Error:', error));
 
     }
+
+    else if (s_value === 'Wear') {
+      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/wear/', {
+        method: 'POST', // or 'PUT'
+        headers:{
+          'Authorization': `Token ${TOKEN}`,
+        },
+        body: JSON.stringify({name: i_value})
+      }).then(res => res.json())
+      .then(response => {
+        if (response.hasOwnProperty('room_id') === false) {
+          road_status.html(`Status: ${response.description}`)
+          console.log('res', response)
+        }
+
+        else {
+          road_status.html(`Status: You cannot wear this item.`)
+          console.log('none', response)
+        }
+      }
+        )
+      .catch(error => console.error('Error:', error));
+
+    }
+    }
+
+    async function shopping() {
+      let s_value = document.getElementsByClassName('shop-selection')[0].value
+      let i_value = document.getElementsByClassName('shop-input')[0].value
+      let shop_status = p.select('.shop-status')
+
+      if (currentRoom.room_id !== 1) {
+        shop_status.html('Status: You cannot shop in the middle of nowhere.')
+      }
+
+      else if (s_value === 'Sell') {
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          },
+          body: JSON.stringify({name: i_value})
+        }).then(res => res.json())
+        .then(response => {
+          if (response.messages.length !== 0) {
+            shop_status.html(`Status: ${response.messages[0]} Please confirm purchase.`)
+          }
+
+          else {
+            shop_status.html(`Status: You cannot sell an imaginary item.`)
+          }
+        }
+          )
+        .catch(error => console.error('Error:', error));
+  
+      }
+    
+      else if (s_value === 'Confirm') {
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          },
+          body: JSON.stringify({name: i_value, confirm: "yes"})
+        }).then(res => res.json())
+        .then(response => {
+          if (response.messages.length !== 0) {
+            shop_status.html(`Status: ${response.messages[0]}`)
+            let inventory = document.getElementsByClassName('inventory')[0]
+            inventory.classList.toggle("open")
+            let s = document.getElementsByClassName('player')[0]
+            s.classList.toggle("open")
+            wait(5000)
+            inv()
+            wait(5000)
+            stat()
+          }
+
+          else {
+            shop_status.html(`Status: You cannot confirm purchase of an imaginary item.`)
+          }
+        }
+          )
+        .catch(error => console.error('Error:', error));
+  
+      }
     }
     function getInit(data) {
       knownLocations = data 
@@ -448,7 +545,6 @@ class Island extends Component {
       function offen(c) {
         let r = document.getElementsByClassName(c)[0]
         r.classList.toggle("open")
-        console.log('ROAD is working!')
         }
 
       async function miner(c) {
