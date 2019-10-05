@@ -56,7 +56,7 @@ class Login extends Component {
         <h2>Default Pirates:</h2>
         <select className='selection' onChange={this.getValue} onClick={this.getValue}>
           <option token='75578be1cf6136d88fb6b170e43b7da71dea5f84' value='BryceMonkey'>BryceMonkey</option>
-          <option token='65ef3fd1d9226f97f50a440cb4dd09b64e0d6a8c' value='Phinehas'>Phinehas</option>
+          <option token='65ef3fd1d9226f97f50a440cb4dd09b64e0d6a8c' value='KrakenKohler'>KrakenKohler</option>
           <option token='3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' value='Leviathan'>Leviathan</option>
         </select>
         </div>

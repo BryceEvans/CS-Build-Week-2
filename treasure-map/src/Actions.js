@@ -79,12 +79,13 @@ class Actions extends React.Component{
 
                 <div>
                 <form className='new-name'>
-                    <select className='selection' onChange={this.getValue} onClick={this.getValue}>
-                        <option value='New Name'>New Name</option>
-                        <option value='Confirm Name'>Confirm Sale Of</option>
+                    <select className='name-selection' onChange={this.getValue} onClick={this.getValue}>
+                        <option value='New'>New Name</option>
+                        <option value='Confirm'>Confirm Sale Of</option>
                     </select>                      
-                    <input></input>
+                    <input className='name-input'></input>
                     <h4 className='name-submit'>Submit</h4>
+                    <h5 className='name-status'> Status: </h5>
                 </form>
                 <button className='isle-buttons name-b'>Change Name</button>
                 </div>
@@ -98,19 +99,22 @@ class Actions extends React.Component{
 
                 <div>
                 <form className='pray'>
-                    <h4>Pray</h4>
-                    <h5>...</h5>
+                    <h3 className='praying'>Praying...</h3>
                 </form>
                 <button className='isle-buttons pray-b'>Pray</button>
                 </div>
 
                 <div>
                 <form className='abilities'>
-                    <select className='selection' onChange={this.getValue} onClick={this.getValue}>
-                        <option value='Fly'>Fly</option>
+                    <select className='abilities-selection' onChange={this.getValue} onClick={this.getValue}>
                         <option value='Dash'>Dash</option>
+                        <option value='Fly'>Fly</option>
+                        <option value='Carry'>Carry</option>
+                        <option value='Receive'>Receive</option>
                     </select>                      
-                    <input></input>
+                    <input className='abilities-input'></input>
+                    <h4 className='abilities-submit'>Submit</h4>
+                    <h5 className='abilities-status'> Status: </h5>
                 </form>
                 <button className='isle-buttons abilities-b'>Abilities</button>
                 </div>
