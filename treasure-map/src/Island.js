@@ -292,9 +292,14 @@ class Island extends Component {
   let shop;
   let name;
   let mine;
+  let pray;
   let minetext;
   let road_submit;
   let shop_submit;
+  let abilities_submit;
+  let name_submit;
+
+  let enable;
 
     let mining = false;
   p.preload = () => {
@@ -315,16 +320,26 @@ class Island extends Component {
       shop = p.select('.shop-b')
       name = p.select('.name-b')
       mine = p.select('.mine-b')
+      pray = p.select('.pray-b')
+      enable = p.select('.abilities-b')
+
       road_submit = p.select('.road-submit')
       shop_submit = p.select('.shop-submit')
+      abilities_submit = p.select('.abilities-submit')
+      name_submit = p.select('.name-submit')
+
 
       shop.mousePressed(() => offen('shop'))
       road.mousePressed(() => offen('road'))
       name.mousePressed(() => offen('new-name'))
+      enable.mousePressed(() => offen('abilities'))
       mine.mousePressed(() => miner('mine'))
-    
+      pray.mousePressed(() => prayer())
+
       road_submit.mousePressed(roading)
       shop_submit.mousePressed(shopping)
+      abilities_submit.mousePressed(enabling)
+      name_submit.mousePressed(identity)
 
       dom.mousePressed(stat)
       dom3.mousePressed(inv)
@@ -332,6 +347,176 @@ class Island extends Component {
       previousRoom = '...'
     };
 
+    async function identity() {
+      let s_value = document.getElementsByClassName('name-selection')[0].value
+      let i_value = document.getElementsByClassName('name-input')[0].value
+      let name_status = p.select('.name-status')
+
+      if (s_value === 'New') {
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          },
+          body: JSON.stringify({name: i_value})
+        }).then(res => res.json())
+        .then(response => {
+        console.log('redo', response)
+          if (i_value.length !== 0) {
+
+            name_status.html(`Status: ${response.messages[0]} `)
+
+          }
+
+          else {
+            name_status.html(`Status: You must have an identity!`)
+
+          }
+
+
+
+        }
+          )
+        .catch(error => console.error('Error:', error));
+    }
+
+    else if (s_value === 'Confirm') {
+
+      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/', {
+        method: 'POST', // or 'PUT'
+        headers:{
+          'Authorization': `Token ${TOKEN}`,
+        },
+        body: JSON.stringify({name: i_value, confirm: "aye"})
+      }).then(res => res.json())
+      .then(response => {
+        if (i_value.length !== 0) {
+
+          name_status.html(`Status: ${response.messages} `)
+          let s = document.getElementsByClassName('player')[0]
+          s.classList.toggle("open")
+          wait(15000)
+          stat()
+        }
+
+        else {
+          name_status.html(`Status: You must have an identity!`)
+
+        }
+
+
+
+      }
+        )
+      .catch(error => console.error('Error:', error));
+
+  }
+}
+
+    async function enabling() {
+      let s_value = document.getElementsByClassName('abilities-selection')[0].value
+      let i_value = document.getElementsByClassName('abilities-input')[0].value
+      let abilities_status = p.select('.abilities-status')
+
+      if (s_value === 'Carry') {
+        console.log('Yes')
+
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/carry/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          },
+          body: JSON.stringify({name: i_value})
+        }).then(res => res.json())
+        .then(response => {
+
+          if (response.messages.length !== 0) {
+
+            abilities_status.html(`Status: ${response.messages} `)
+            let s = document.getElementsByClassName('player')[0]
+            s.classList.toggle("open")
+            wait(10000)
+            stat()
+          }
+
+          else if (response.errors.length === 1) {
+            console.log('error', response)
+
+            abilities_status.html(`Status: ${response.errors}`)
+          }
+          else {
+            console.log('hold', response)
+            abilities_status.html(`Status: You cannot ask companion to hold an imaginary item!`)
+
+          }
+
+
+
+        }
+          )
+        .catch(error => console.error('Error:', error));
+      }
+
+      else if (s_value === 'Receive') {
+
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/receive/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          }
+        }).then(res => res.json())
+        .then(response => {
+          console.log('receive', response)
+          if (response.messages.length !== 0) {
+
+            abilities_status.html(`Status: ${response.messages} `)
+
+            let s = document.getElementsByClassName('player')[0]
+            s.classList.toggle("open")
+            wait(10000)
+            stat()
+
+          }
+
+          else {
+            abilities_status.html(`Status: ${response.errors} `)
+ 
+          }
+        }
+          )
+        .catch(error => console.error('Error:', error));
+    }
+  }
+
+    async function prayer() {
+      let r = document.getElementsByClassName('pray')[0]
+      r.classList.toggle("open")
+
+      let prayer_status = p.select('.praying')
+      if ((r.classList.contains('open') && currentRoom.room_id === 461) || (r.classList.contains('open') && currentRoom.room_id === 499) ) {
+
+        console.log('inside prayer')
+
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/pray/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          }
+        }).then(res => res.json())
+        .then(response => {
+          console.log(response)
+          prayer_status.html(response.messages)
+        }  
+          )
+        .catch(error => console.error('Error:', error));
+
+
+      }
+
+      else {
+        prayer_status.html("YOU MUST FIND THE SHRINE TO PRAY!")  
+      }
+    }
     async function roading() {
       let s_value = document.getElementsByClassName('road-selection')[0].value
       let i_value = document.getElementsByClassName('road-input')[0].value
@@ -358,7 +543,7 @@ class Island extends Component {
               inv()
               wait(15000)
               gotIt()
-              wait(5000)
+              wait(10000)
               stat()
             }
             if (response.messages.length !== 0) {
@@ -398,7 +583,7 @@ class Island extends Component {
             inv()
             wait(5000)
             gotIt()
-            wait(5000)
+            wait(10000)
             stat()
           }
           if (response.messages.length !== 0) {
@@ -449,9 +634,13 @@ class Island extends Component {
         body: JSON.stringify({name: i_value})
       }).then(res => res.json())
       .then(response => {
-        if (response.hasOwnProperty('room_id') === false) {
-          road_status.html(`Status: ${response.description}`)
-          console.log('res', response)
+        console.log(response, 'to wear')
+        if (response.messages.length !== 0) {
+          road_status.html(`Status: ${response.messages}`)
+          let s = document.getElementsByClassName('player')[0]
+          s.classList.toggle("open")
+          wait(10000)
+          stat()
         }
 
         else {
@@ -513,7 +702,7 @@ class Island extends Component {
             s.classList.toggle("open")
             wait(5000)
             inv()
-            wait(5000)
+            wait(10000)
             stat()
           }
 
@@ -748,7 +937,7 @@ class Island extends Component {
     }).then(res => res.json())
     .then(response => {
       currentRoom = response
-      console.log('Arrr', response)
+      console.log('Arrr', response.cooldown)
       wait(response.cooldown*1000+1000)
       gotIt()
     })
