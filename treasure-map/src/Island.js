@@ -293,11 +293,15 @@ class Island extends Component {
   let name;
   let mine;
   let pray;
+  let transform;
   let minetext;
   let road_submit;
   let shop_submit;
   let abilities_submit;
   let name_submit;
+  let transform_submit;
+  let abilities_selection;
+
 
   let enable;
 
@@ -322,11 +326,16 @@ class Island extends Component {
       mine = p.select('.mine-b')
       pray = p.select('.pray-b')
       enable = p.select('.abilities-b')
+      transform = p.select('.transform-b')
+
 
       road_submit = p.select('.road-submit')
       shop_submit = p.select('.shop-submit')
       abilities_submit = p.select('.abilities-submit')
       name_submit = p.select('.name-submit')
+      transform_submit = p.select('.transform-submit')
+
+      abilities_selection = p.select('.abilities-selection')
 
 
       shop.mousePressed(() => offen('shop'))
@@ -335,17 +344,111 @@ class Island extends Component {
       enable.mousePressed(() => offen('abilities'))
       mine.mousePressed(() => miner('mine'))
       pray.mousePressed(() => prayer())
+      transform.mousePressed(() => offen('transform'))
 
       road_submit.mousePressed(roading)
       shop_submit.mousePressed(shopping)
       abilities_submit.mousePressed(enabling)
       name_submit.mousePressed(identity)
+      transform_submit.mousePressed(transmorph)
 
+      abilities_selection.input(addClass)
       dom.mousePressed(stat)
       dom3.mousePressed(inv)
       dom4.mousePressed(gotIt)
       previousRoom = '...'
     };
+
+    async function transmorph() {
+      let i_value = document.getElementsByClassName('transform-input')[0].value
+      let transform_status = p.select('.transform-status')
+
+      if (i_value && currentRoom.room_id === 195) {
+
+        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/transmogrify/', {
+          method: 'POST', // or 'PUT'
+          headers:{
+            'Authorization': `Token ${TOKEN}`,
+          },
+          body: JSON.stringify({name: i_value})
+        }).then(res => res.json())
+        .then(response => {
+          console.log(response, 'to transform')
+            if (response.messages.length !== 0) {
+              let inventory = document.getElementsByClassName('inventory')[0]
+              inventory.classList.toggle("open")
+              let s = document.getElementsByClassName('player')[0]
+              s.classList.toggle("open")
+              wait(10000)
+              inv()
+              wait(10000)
+              stat()
+            }
+            if (response.messages.length !== 0) {
+              transform_status.html(`Status: ${response.messages}`)
+              console.log('res', response.messages)
+            }
+  
+            else {
+              transform_status.html(`Status: You cannot transform this item`)
+              console.log('none', response.messages.length)
+            }
+        }
+          )
+        .catch(error => console.error('Error:', error));
+
+
+      }
+
+      else {
+        if (currentRoom.room_id !== 495) {
+          transform_status.html(`Status: YOU MUST FIND THE TRANSMOGRIFIER!`)
+        }
+
+        else {
+          transform_status.html(`Status: YOU CANNOT TRANSMOGRIFY NOTHING!`)
+        }
+      }
+    }
+
+    function addClass() {
+      let s_value = document.getElementsByClassName('abilities-selection')[0].value
+      let show = document.getElementsByClassName('dash')[0]
+      let inputI = document.getElementsByClassName('abilities-input')[0]
+
+      if (s_value === 'Dash') {
+        let vis = document.getElementsByClassName('visible')
+
+        for (let item of vis) {
+          item.classList.remove('hide')
+        }
+
+        show.classList.remove('pass')
+        inputI.value = ''
+      }
+
+      else if (s_value === 'Fly') {
+        let vis = document.getElementsByClassName('visible')
+        console.log(vis)
+        show.classList.remove('pass')
+
+        for (let item of vis) {
+          item.classList.add('hide')
+        }
+        inputI.value = ''
+      }
+
+      else {
+        let vis = document.getElementsByClassName('visible')
+
+        for (let item of vis) {
+          item.classList.remove('hide')
+        }
+        show.classList.add('pass')
+        inputI.value = ''
+      }
+
+    }
 
     async function identity() {
       let s_value = document.getElementsByClassName('name-selection')[0].value
@@ -486,6 +589,120 @@ class Island extends Component {
           )
         .catch(error => console.error('Error:', error));
     }
+
+    else if (s_value === 'Dash') {
+
+      let d_value = p.select('.direction-selection').value()
+      let r_value = p.select('.rooms-input').value()
+      let final_value = i_value
+      console.log(String(final_value), 'final', JSON.stringify(r_value))
+      final_value = final_value.replace(/\s/g, '');
+      console.log(final_value, 'final', r_value)
+      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/dash/', {
+        method: 'POST', // or 'PUT'
+        headers:{
+          'Authorization': `Token ${TOKEN}`,
+        },
+        body: JSON.stringify({direction: d_value, num_rooms: r_value, next_room_ids: final_value })
+      }).then(res => res.json())
+      .then(response => {
+        console.log('receive', response)
+        if (response.messages.length !== 0) {
+          let found;
+          let regex = /\d+/;
+          console.log(response.messages.length, response)
+
+          let c = document.getElementsByClassName('current')[0]
+          c.classList.toggle("open")
+          if (response.messages.length >=2) {
+            if (response.messages[response.messages.length-1].includes("You have dashed") === false) {
+              abilities_status.html(`Status: ${response.messages[response.messages.length-2]} `)
+
+              found = response.messages[response.messages.length-2].match(regex);
+            }
+            else {
+              abilities_status.html(`Status: ${response.messages[response.messages.length-1]} `)
+              found = response.messages[response.messages.length-1].match(regex);  
+            }
+            currentRoom.room_id = Number(found[0])
+            wait(15000)
+            gotIt()
+            p.redraw(1);
+            console.log(currentRoom.room_id, 'room id after')
+          }
+
+          else if (response.messages.length === 1) {
+            found = response.messages[response.messages.length-1].match(regex);  
+            currentRoom.room_id = Number(found[0])
+            abilities_status.html(`Status: ${response.messages} `)
+
+            wait(15000)
+            gotIt()
+            p.redraw(1);
+          }
+
+          else {
+            abilities_status.html(`Status: ${response.errors} `)
+
+          }
+        }
+
+        else {
+          abilities_status.html(`Status: ${response.errors} `)
+
+        }
+      }
+        )
+      .catch(error => {
+        console.error('Error:', error)
+        abilities_status.html(`Status: Check your direction!`)
+      });
+  }
+
+
+  else if (s_value === 'Fly') {
+
+    let d_value = p.select('.direction-selection').value()
+
+
+    await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/fly/', {
+      method: 'POST', // or 'PUT'
+      headers:{
+        'Authorization': `Token ${TOKEN}`,
+      },
+      body: JSON.stringify({direction: d_value})
+    }).then(res => res.json())
+    .then(response => {
+
+      if (response.messages.length !== 0) {
+
+        console.log('Fly', response)
+        let c = document.getElementsByClassName('current')[0]
+        c.classList.toggle("open")
+  
+        currentRoom.room_id = Number(response.room_id)
+  
+        wait(15000)
+        gotIt()
+        p.redraw(1);
+        abilities_status.html(`Status: ${response.messages} `)
+
+      }
+
+      else {
+        console.log('Fly', response)
+
+        abilities_status.html(`Status: ${response.errors}`)
+
+      }
+
+
+    }
+      )
+    .catch(error => {
+      console.error('Error:', error)
+    });
+}
   }
 
     async function prayer() {
@@ -493,7 +710,7 @@ class Island extends Component {
       r.classList.toggle("open")
 
       let prayer_status = p.select('.praying')
-      if ((r.classList.contains('open') && currentRoom.room_id === 461) || (r.classList.contains('open') && currentRoom.room_id === 499) ) {
+      if ((r.classList.contains('open') && currentRoom.room_id === 461) || (r.classList.contains('open') && currentRoom.room_id === 499) || (r.classList.contains('open') && currentRoom.room_id === 22) ) {
 
         console.log('inside prayer')
 
