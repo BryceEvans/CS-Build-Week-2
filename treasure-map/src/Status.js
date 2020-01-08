@@ -4,6 +4,8 @@ import axios from 'axios';
 import Player from './Player';
 import Inventory from './Inventory';
 import CurrentRoom from './CurrentRoom';
+import './SASS/App.sass';
+
 
 
 class PlayerStatus extends React.Component{
