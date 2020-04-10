@@ -2,3 +2,8 @@
 base = "treasure-map/"
 publish = "treasure-map/build/"
 command = "yarn build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
