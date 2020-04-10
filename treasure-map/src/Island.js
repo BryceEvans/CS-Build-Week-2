@@ -11,6 +11,7 @@ import qs from 'qs'
 import {sha256} from 'js-sha256'
 import Collapsible from 'react-collapsible';
 import './SASS/App.sass';
+import island from './img/Island.jpg'
 // {
 //     "room_id": 0,
 //     "title": "Room 0",
@@ -301,7 +302,7 @@ class Island extends Component {
   let name_submit;
   let transform_submit;
   let abilities_selection;
-
+  let bg;
 
   let enable;
 
@@ -310,12 +311,16 @@ class Island extends Component {
     TOKEN = document.getElementsByClassName("map")[0].getAttribute('token')
 
       p.loadJSON('https://schatzinsel.herokuapp.com/map', getInit);
+      bg = p.loadImage(island)
 
+      console.log(bg, 'do the BG!')
   }
     p.setup = () => {
       canvas = p.createCanvas(1260, 1600);
-      p.noStroke();
+      p.background(bg, 1260, 1600);
 
+      p.noStroke();
+      bg = p.image(bg, 1260,)
       dom = p.select('.player')
       dom2 = p.select('.goodbye');
       dom3 = p.select('.inventory')
@@ -1241,7 +1246,6 @@ function valid_proof(last_proof, proof, proof_difficulty) {
 }
 
     p.draw = () => {
-      p.background('tan');
       if (currentRoom !== undefined)
       {
 
@@ -1324,7 +1328,7 @@ function valid_proof(last_proof, proof, proof_difficulty) {
       <div>
         <div className="flip map" token={this.state.token}>
           <Status className='stat' />
-          <P5Wrapper className='island' sketch={this.sketch} color={this.state.color}></P5Wrapper>
+          <P5Wrapper className='island' sketch={this.sketch} color={this.state.color} island={island}></P5Wrapper>
           <Actions className='act' />
         </div>
       </div>
