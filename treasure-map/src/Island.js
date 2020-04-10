@@ -118,19 +118,18 @@ class Island extends Component {
           );
         }
         else if (knownLocations[i].room_id === currentRoom.room_id) {
-          p.stroke('white');
+          p.stroke('black');
           p.strokeWeight(5);
           p.ellipseMode(p.RADIUS);
-          p.fill('lime');
+          p.fill('white');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
             1999 - knownLocations[i].coordinates[1]*51+1875,
-            20
+            25
           );
         }
         else if (knownLocations[i].title === "Shop") {
-          p.stroke('black');
-          p.strokeWeight(5);          
+          p.noStroke()
           p.ellipseMode(p.RADIUS);
           p.fill('gold');
           p.circle(
@@ -173,7 +172,7 @@ class Island extends Component {
         else if (knownLocations[i].title !== "A misty room") {
           p.noStroke();
           p.ellipseMode(p.RADIUS);
-          p.fill('white');
+          p.fill('wheat');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
             1999 - knownLocations[i].coordinates[1]*51+1875,
@@ -182,10 +181,9 @@ class Island extends Component {
         }
 
         else {
-          p.stroke('black');
-          p.strokeWeight(2);    
+          p.noStroke();   
           p.ellipseMode(p.RADIUS);
-          p.fill('silver');
+          p.fill('green');
           p.circle(
             knownLocations[i].coordinates[0]*51-2510,
             1999 - knownLocations[i].coordinates[1]*51+1875,
@@ -209,7 +207,7 @@ class Island extends Component {
           );
 
         }
-        else if (knownLocations[i].room_id === currentRoom.room_id) {
+        else if (knownLocations[i].room_id === currentRoom.room_id || knownLocations[i].room_id === 461 || knownLocations[i].room_id === 495 || knownLocations[i].room_id === 499 || knownLocations[i].room_id === 1 || knownLocations[i].room_id === 467 || knownLocations[i].room_id === 0) {
           p.noStroke();
           p.textSize(12);
           p.fill('black');
@@ -234,7 +232,7 @@ class Island extends Component {
         else {
           p.noStroke();
           p.textSize(12);
-          p.fill('black');
+          p.fill('white');
           p.textAlign(p.CENTER);
           p.text(
             knownLocations[i].room_id,
@@ -311,16 +309,14 @@ class Island extends Component {
     TOKEN = document.getElementsByClassName("map")[0].getAttribute('token')
 
       p.loadJSON('https://schatzinsel.herokuapp.com/map', getInit);
-      bg = p.loadImage(island)
+      bg = p.loadImage(island, 1260, 1600)
 
       console.log(bg, 'do the BG!')
   }
     p.setup = () => {
       canvas = p.createCanvas(1260, 1600);
-      p.background(bg, 1260, 1600);
 
       p.noStroke();
-      bg = p.image(bg, 1260,)
       dom = p.select('.player')
       dom2 = p.select('.goodbye');
       dom3 = p.select('.inventory')
@@ -1246,6 +1242,8 @@ function valid_proof(last_proof, proof, proof_difficulty) {
 }
 
     p.draw = () => {
+      p.background(bg);
+
       if (currentRoom !== undefined)
       {
 
