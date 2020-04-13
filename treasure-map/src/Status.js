@@ -50,6 +50,7 @@ class PlayerStatus extends React.Component{
         delete player.inventory
         return (
             <div className='status'>
+
                 <div className='panel'>
                 <div>
                 <Player player = {player}/>
