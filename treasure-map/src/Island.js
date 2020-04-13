@@ -12,6 +12,8 @@ import {sha256} from 'js-sha256'
 import Collapsible from 'react-collapsible';
 import './SASS/App.sass';
 import island from './img/Island.jpg'
+import schatzinsel from './img/SchatzinselLogo.svg'
+import {BrowserRouter as Router,Route, NavLink} from 'react-router-dom';
 // {
 //     "room_id": 0,
 //     "title": "Room 0",
@@ -1323,12 +1325,17 @@ function valid_proof(last_proof, proof, proof_difficulty) {
 
   render() {
     return (
-      <div>
+      <div className='game'>
+        <NavLink to={{pathname: `/`}}>
+        <img className='login-logo' src={schatzinsel} alt="logo" />
+        <h6>Logout</h6>
+        </NavLink>
         <div className="flip map" token={this.state.token}>
           <Status className='stat' />
           <P5Wrapper className='island' sketch={this.sketch} color={this.state.color} island={island}></P5Wrapper>
           <Actions className='act' />
         </div>
+        <h2 className='pH1'>ⓘ</h2>
       </div>
     );
   }
