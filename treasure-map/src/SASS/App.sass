@@ -129,9 +129,11 @@ html
 
 .game
     display: flex
+    max-width: 1420px
+    justify-content: center;
     a
         display: flex
-        position: fixed
+        position: sticky
         flex-direction: column
         align-items: center
         height: 10%
@@ -146,15 +148,28 @@ html
         h6
             margin: 0
             font-size: 1rem
-.pH1
+.instruct-button
     display: flex
     justify-content: center
     margin: 0
-    position: fixed
+    position: sticky
     right: 0
     top: 0
     text-align: center
     font-size: 2.5rem
     width: 6%
+    height: 10%
+    cursor: pointer
 
-    
+.instructions
+    display: none
+    background-color: yellow
+    justify-content: center
+    align-items: center
+    align-self: center
+    position: fixed
+    z-index: 1
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%);
+
