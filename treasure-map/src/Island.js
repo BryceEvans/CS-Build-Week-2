@@ -78,13 +78,35 @@ class Island extends Component {
     this.state = {
       token: this.props.location.state.token,
       currentRoom: {room_id: 22222},
-      previousRoom: '...'
+      previousRoom: '...',
+      open: false
     };
   }
 
   change = roomN => {
     this.setState({ currentRoom: roomN });
   };
+
+  instruct = (val) => {
+    let rules = document.getElementsByClassName('instructions')[0]
+    let button = document.getElementsByClassName('instruct-button')[0]
+
+    if (val === false) {
+      rules.style.display = 'flex'
+      button.style.color = 'lime'
+      button.style.textShadow = '0px 0px 10px black, 0px 0px 10px black, 0px 0px 10px black, 0px 0px 10px black, 0px 0px 10px black'
+
+
+    }
+    else {
+      rules.style.display = 'none'
+      button.style.color = 'black'
+      button.style.textShadow = 'none'
+
+    }
+
+    this.setState({open: !val})
+  }
 
   sketch(p) {
 
@@ -1335,7 +1357,12 @@ function valid_proof(last_proof, proof, proof_difficulty) {
           <P5Wrapper className='island' sketch={this.sketch} color={this.state.color} island={island}></P5Wrapper>
           <Actions className='act' />
         </div>
-        <h2 className='pH1'>ⓘ</h2>
+        <h2 className='instruct-button' onClick={()=> this.instruct(this.state.open)}>ⓘ</h2>
+        <div className='instructions'>
+          <h1>
+            hello!
+          </h1>
+        </div>
       </div>
     );
   }
