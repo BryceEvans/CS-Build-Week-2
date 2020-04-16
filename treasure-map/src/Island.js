@@ -334,8 +334,6 @@ class Island extends Component {
 
       p.loadJSON('https://schatzinsel.herokuapp.com/map', getInit);
       bg = p.loadImage(island, 1260, 1600)
-
-      console.log(bg, 'do the BG!')
   }
     p.setup = () => {
       canvas = p.createCanvas(1260, 1600);
@@ -1359,9 +1357,82 @@ function valid_proof(last_proof, proof, proof_difficulty) {
         </div>
         <h2 className='instruct-button' onClick={()=> this.instruct(this.state.open)}>ⓘ</h2>
         <div className='instructions'>
-          <h1>
-            hello!
+          <h1 className='instructH1'>
+            Schatzinsel Instructions
           </h1>
+          <h2>
+            Introduction
+          </h2>
+          <p>
+            Welcome to Schatzinsel! From German,
+            Schatzinsel translates to Treasure Island.
+            Who doesn't want to find treasure? As a pirate,
+            your mission is to search the island for treasure. Over time, you can
+            buy items to update your character to become the biggest and baddest of all pirates.
+          </p>
+          <h2>
+            Island Navigation
+          </h2>
+          <p>
+          The island consists of 500 different locations. Every location is connected.
+          They are connected to either one, two, three, or four different locations.
+          You can only go to connected locations.
+          </p>
+          <h3>
+          Arrow Keys
+          </h3>
+          <div className='directions'>
+          <div>
+          <h4>◀</h4>
+          <p>
+          Move Left
+          </p>
+          </div>
+
+          <div>
+          <h4>▲</h4>
+          <p>
+          Move Up
+          </p>
+          </div>
+
+          <div>
+          <h4>▶</h4>
+          <p>
+          Move Right
+          </p>
+          </div>
+
+          <div>
+          <h4>▼</h4>
+          <p>
+          Move Down
+          </p>
+          </div>
+          </div>
+
+          <h2>
+          Abilities
+          </h2>
+
+          <h3>
+          On the Road
+          </h3>
+          <div>
+          <h4>Examine</h4>
+          <p>
+          Type in an item that you own or is in the current room to see more details.
+          </p>
+          </div>
+          <div>
+          <h4>Take</h4>
+          <p>
+          Type in an item that is in the current room to see more details.
+          </p>
+          </div>
+          <h4>Drop</h4>
+          <h4>Wear</h4>
+
         </div>
       </div>
     );
