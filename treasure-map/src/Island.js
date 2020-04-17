@@ -477,8 +477,11 @@ class Island extends Component {
       let s_value = document.getElementsByClassName('name-selection')[0].value
       let i_value = document.getElementsByClassName('name-input')[0].value
       let name_status = p.select('.name-status')
+      if (currentRoom.room_id !== 467) {
+        name_status.html(`Status: You cannot change your own identity! You must find Pirate Rye.`)
 
-      if (s_value === 'New') {
+      }
+      else if (s_value === 'New' ) {
         await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/', {
           method: 'POST', // or 'PUT'
           headers:{
@@ -1427,12 +1430,51 @@ function valid_proof(last_proof, proof, proof_difficulty) {
           <div>
           <h4>Take</h4>
           <p>
-          Type in an item that is in the current room to see more details.
+          Type in an item that is in the current room to pick up.
           </p>
           </div>
+          <div>
           <h4>Drop</h4>
+          <p>
+          Type in an item that is in your current inventory to drop.
+          </p>
+          </div>
+          <div>
           <h4>Wear</h4>
-
+          <p>
+          Some items can be worn to upgrade your character. Type in an item in your current inventory you want to wear.
+          </p>
+          </div>
+          <h3>
+          Shop
+          </h3>
+          <div>
+          <h4>Sell</h4>
+          <p>
+          Type in an item that you want to sell. You must be in the shop and have the item in your inventory.
+          </p>
+          </div>
+          <div>
+          <h4>Confirm the Sell Of</h4>
+          <p>
+          After using the sell option, you must confirm the item you want to sell. You must keep the item's name in the input.
+          </p>
+          </div>
+          <h3>
+          Change Name
+          </h3>
+          <div>
+          <h4>New Name</h4>
+          <p>
+          In order to change your identity, you must find Pirate Rye. He can change it for a price.
+          </p>
+          </div>
+          <div>
+          <h4>Confirm Sell Of</h4>
+          <p>
+          You must confirm the name you want your identity to be changed to. Keep the same name in the input.
+          </p>
+          </div>
         </div>
       </div>
     );
