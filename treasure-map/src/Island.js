@@ -385,8 +385,8 @@ class Island extends Component {
     async function transmorph() {
       let i_value = document.getElementsByClassName('transform-input')[0].value
       let transform_status = p.select('.transform-status')
-
-      if (i_value && currentRoom.room_id === 195) {
+      console.log('this is the transform value', i_value, currentRoom.room_id)
+      if (i_value && currentRoom.room_id === 495) {
 
         await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/transmogrify/', {
           method: 'POST', // or 'PUT'
@@ -1415,7 +1415,7 @@ class Island extends Component {
           </div>
 
           <h2>
-          Abilities
+          Actions
           </h2>
 
           <h3>
@@ -1476,13 +1476,63 @@ class Island extends Component {
           </p>
           </div>
 
-          <h3>
-          Change Name
+          {/* <h3>
+          Mine
           </h3>
           <div>
-          <h4>Mine</h4>
           <p>
           In order to mine Lambda coins, you must be in the correct room.
+          </p>
+          </div> */}
+          <h3>
+          Pray
+          </h3>
+          <div>
+          <p>
+          In order to pray, you must find a shrine. You will then gain abilities that enhance your character.
+          </p>
+          </div>
+
+          <h3>
+          Abilities
+          </h3>
+          <div>
+          <h4>Dash</h4>
+          <p>
+          The Dash ability allows you to cross many rooms at once in a single direction. You must input the correct direction, along with how many rooms you want to cross. Count every room except the one you are currently in.
+          Additionally, you must list every room id in the correct order in the direction you are going. Use commas to separate the id numbers.
+          </p>
+          </div>
+          <div>
+          <h4>Fly</h4>
+          <p>
+          The Fly ability allows you to move to another room without any elevation penalties. Simply select the direction you are wanting to go.
+          </p>
+          </div>
+          <div>
+          <h4>Carry</h4>
+          <p>
+          The Carry ability allows you to hand Glasowyn's Ghost an item (preferably your heaviest item) you are holding.  This allows you to carry more weight before having to either put it down or sell it. Type the name of the item
+          you want for Glasowyn's Ghost to carry for you.
+          </p>
+          </div>
+          <div>
+          <h4>Receive</h4>
+          <p>
+          The Receive ability allows you to receive the item that Glasowyn's Ghost was holding for you. Type in the name of the item
+          you want to take back from Glasowyn's Ghost.
+          </p>
+          </div>
+          <h3>
+          Transmogrify
+          </h3>
+          <div>
+          <h4>Transform</h4>
+          <p>
+          This action allows you to take an item you hold and transform it into useful items you can wear. These
+          items will upgrade your character to be able to go faster and/or hold more items.
+          You must have a Lambda Coin in order to use this action. Type the item you want to transform. You must also be in
+          in the correct room.
           </p>
           </div>
         </div>
