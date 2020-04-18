@@ -90,12 +90,12 @@ class Actions extends React.Component{
                 <button className='isle-buttons name-b'>Change Name</button>
                 </div>
 
-                <div className='a-buttons'>
+                {/* <div className='a-buttons'>
                 <form className='mine'>
                     <h3 className='mining'>Mining...</h3>
                 </form>
                 <button className='isle-buttons mine-b'>Mine</button>
-                </div>
+                </div> */}
 
                 <div className='a-buttons'>
                 <form className='pray'>
