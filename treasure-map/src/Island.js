@@ -1475,6 +1475,16 @@ function valid_proof(last_proof, proof, proof_difficulty) {
           You must confirm the name you want your identity to be changed to. Keep the same name in the input.
           </p>
           </div>
+
+          <h3>
+          Change Name
+          </h3>
+          <div>
+          <h4>Mine</h4>
+          <p>
+          In order to mine Lambda coins, you must be in the correct room.
+          </p>
+          </div>
         </div>
       </div>
     );
