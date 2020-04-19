@@ -9,7 +9,7 @@ import './SASS/Login.sass'
 
 function App() {
   return (
-    <div className="Login">
+    <div className="Main">
       <Route exact path="/" render={(props) => <Login {...props} />} />
       <Route exact path="/island" render={(props) => <Island {...props} />} />
     </div>
