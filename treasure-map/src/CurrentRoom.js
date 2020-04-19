@@ -14,8 +14,6 @@ export default props => {
                 <h4 className='rI'></h4>
                 <h4 className='rP'></h4>
                 <h4 className='rC'>cooldown:</h4>
-                <h4 className='rM'>messages:</h4>
-                <h4 className='rERR'>errors:</h4>
 
             </Collapsible>
         </div>
