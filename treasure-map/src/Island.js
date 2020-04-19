@@ -1360,6 +1360,7 @@ class Island extends Component {
           <h2>
             Introduction
           </h2>
+          <div>
           <p>
             Welcome to Schatzinsel! From German,
             Schatzinsel translates to Treasure Island.
@@ -1367,14 +1368,17 @@ class Island extends Component {
             your mission is to search the island for treasure. Over time, you can
             buy items to update your character to become the biggest and baddest of all pirates.
           </p>
+          </div>
           <h2>
             Island Navigation
           </h2>
+          <div>
           <p>
           The island consists of 500 different locations. Every location is connected.
           They are connected to either one, two, three, or four different locations.
           You can only go to connected locations.
           </p>
+          </div>
           <h3>
           Arrow Keys
           </h3>
