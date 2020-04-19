@@ -295,12 +295,10 @@ class Island extends Component {
   let rD;
   let rE;
   let rI;
-  let rM;
   let rP;
   let rID;
   let rTE;
   let rTI;
-  let rERR;
 
   let pG;
   let pE;
@@ -1129,12 +1127,10 @@ class Island extends Component {
           rD = p.select('.rD');
           rE = p.select('.rE');
           rI = p.select('.rI');
-          rM = p.select('.rM');
           rP = p.select('.rP');
           rID = p.select('.rID');
           rTE = p.select('.rTE');
           rTI = p.select('.rTI');
-          rERR = p.select('.rERR');
           const config = {
               method: 'get',
               url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
@@ -1153,11 +1149,9 @@ class Island extends Component {
               rID.html('room id: ' + res.data.room_id)
               rC.html('cooldown: ' + res.data.cooldown)
               rD.html(res.data.description)
-              rM.html('messages: ' + messages)
               rTI.html('title: ' + res.data.title)
               rTE.html('terrain: ' + res.data.terrain)
               rE.html('elevation: ' + res.data.elevation)
-              rERR.html('errors: ' + JSON.stringify(res.data.errors))
               rP.html('players: ' + players)
               rI.html('items: ' + gifts)
               })
@@ -1412,6 +1406,127 @@ class Island extends Component {
           Move Down
           </p>
           </div>
+          </div>
+
+          <h2>Status</h2>
+
+          <h3>
+          Player Status
+          </h3>
+          <div>
+          <h4>Name</h4>
+          <p>
+          Your character's name
+          </p>
+          </div>
+          <div>
+          <h4>Cooldown</h4>
+          <p>
+          The number of seconds you must wait before using another action.
+          </p>
+          </div>
+          <div>
+          <h4>Encumbrance</h4>
+          <p>
+          The amount of weight you are currently carrying. Your encumbrance should be less than or equal to the amount of strength you have.
+          More weight will only slow you down.
+          </p>
+          </div>
+          <div>
+          <h4>Strength</h4>
+          <p>
+          The amount of total weight you can carry.
+          </p>
+          </div>
+          <div>
+          <h4>Speed</h4>
+          <p>
+          The speed at which you can travel.
+          </p>
+          </div>
+          <div>
+          <h4>Gold</h4>
+          <p>
+          How much gold you have earned.
+          </p>
+          </div>
+
+          <h3>
+          Inventory
+          </h3>
+          <div>
+          <p>
+          You can pick up tiny treasure, small treasure, or other misc treasure. You will be able to sell
+          these items at the store.
+          </p>
+          </div>
+
+          <h3>
+          Current Room
+          </h3>
+          <div>
+          <h4>Room ID</h4>
+          <p>
+          The room you are currently standing in.
+          </p>
+          </div>
+
+          <div>
+          <h4>Title</h4>
+          <p>
+          The name of the room you are currently standing in.
+          </p>
+          </div>
+
+          <div>
+          <h4>Description</h4>
+          <p>
+          A little more details about the current room.
+          </p>
+          </div>
+
+          <div>
+          <h4>Terrain</h4>
+          <p>
+          The kind of location you are standing in. 
+          </p>
+          </div>
+
+          <div>
+          <h4>Elevation</h4>
+          <p>
+          A value that determines how high up the current room is. If an elevation is higher or lower than the previous elevation, the more time it will take to travel there.
+          </p>
+          </div>
+
+          <div>
+          <h4>Items</h4>
+          <p>
+          A list of items that are in the current room. They can be picked up and sold at the shop.
+          </p>
+          </div>
+
+          <div>
+          <h4>Players</h4>
+          <p>
+          A list of players who are in the current room.
+          </p>
+          </div>
+
+          <div>
+          <h4>Cooldown</h4>
+          <p>
+          A number that represents the time you will have to wait to move to the next room.
+          </p>
+          </div>
+
+          <h3>
+          Previous Room ID
+          </h3>
+          <div>
+          <p>
+          The room id represents the room where you moved from. This will help you understand which direction you are going. 
+          </p>
           </div>
 
           <h2>
