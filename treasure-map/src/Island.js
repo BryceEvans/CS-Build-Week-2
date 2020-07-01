@@ -960,7 +960,7 @@ class Island extends Component {
       knownLocations = data 
       const config = {
         method: 'get',
-        url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
+        url: 'https://schatzinsel.herokuapp.com/map',
         headers: {
           Authorization: `Token ${TOKEN}`
         }
