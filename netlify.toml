@@ -1,7 +1,7 @@
 [build]
 base = "treasure-map/"
 publish = "treasure-map/build/"
-command = "yarn build"
+command = "CI= yarn build"
 
 [[redirects]]
   from = "/*"
