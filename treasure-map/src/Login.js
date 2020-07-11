@@ -5,7 +5,9 @@ import {BrowserRouter as Router,Route, NavLink} from 'react-router-dom';
 
 import './SASS/Login.sass';
 
-   
+import axios from 'axios';
+
+
 
 class Login extends Component {
     constructor(props) {
@@ -36,6 +38,11 @@ class Login extends Component {
 
   }
 
+  logIn = async() => {
+    let res = await axios.post('https://l-t-h.herokuapp.com/api/login/', {username: "levi.appenfelder", email: "levi-appenfelder@lambdastudents.com", password: "7e2uanjyco"})
+    console.log(res)
+  }
+
   render() {
     return (
         <div className="Login">
@@ -53,15 +60,13 @@ class Login extends Component {
             </div>
         </form>
         <div onClick={this.getValue} className='dropdown'>
-        <h2>Default Pirates:</h2>
+        <h2>Default Pirate:</h2>
         <select className='selection' onChange={this.getValue} onClick={this.getValue}>
-          <option token='75578be1cf6136d88fb6b170e43b7da71dea5f84' value='BryceMonkey'>BryceMonkey</option>
-          <option token='65ef3fd1d9226f97f50a440cb4dd09b64e0d6a8c' value='KrakenKohler'>KrakenKohler</option>
-          <option token='3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' value='Leviathan'>Leviathan</option>
+          <option token='b00e2b2a4f4f6370aade400038eb2f06ca343d49' value='Leviathan'>Leviathan</option>
         </select>
         </div>
         <NavLink  to={{pathname: `/island`, state: {token: this.state.password }}}>
-        <button>Find the Gold!</button>
+        <button onClick={this.logIn}>Find the Gold!</button>
         </NavLink>
         </div>
     );

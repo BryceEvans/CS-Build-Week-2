@@ -29,7 +29,7 @@ class Actions extends React.Component{
         console.log("player token", playerToken)
         const config = {
             method: 'post',
-            url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/status/',
+            url: 'https://l-t-h.herokuapp.com/api/adv/status/',
             headers: {
               Authorization: `Token ${playerToken}`
             }
@@ -90,12 +90,12 @@ class Actions extends React.Component{
                 <button className='isle-buttons name-b'>Change Name</button>
                 </div>
 
-                {/* <div className='a-buttons'>
+                <div className='a-buttons'>
                 <form className='mine'>
                     <h3 className='mining'>Mining...</h3>
                 </form>
                 <button className='isle-buttons mine-b'>Mine</button>
-                </div> */}
+                </div>
 
                 <div className='a-buttons'>
                 <form className='pray'>

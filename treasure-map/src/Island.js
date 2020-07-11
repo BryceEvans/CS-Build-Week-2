@@ -65,13 +65,13 @@ class Room {
 // const activePlayer = '65ef3fd1d9226f97f50a440cb4dd09b64e0d6a8c'
 
 // Levi
-const activePlayer = '3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9'
+const activePlayer = 'b00e2b2a4f4f6370aade400038eb2f06ca343d49'
 
 //Bryce
 // const activePlayer = '75578be1cf6136d88fb6b170e43b7da71dea5f84'
 
-// curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"treasure"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/
-// curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"treasure", "confirm":"yes"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/
+// curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"treasure"}' https://l-t-h.herokuapp.com/api/adv/sell/
+// curl -X POST -H 'Authorization: Token 3c0bafec5baddbb3fa7a8ca7c72c2b9b3b3062a9' -H "Content-Type: application/json" -d '{"name":"treasure", "confirm":"yes"}' https://l-t-h.herokuapp.com/api/adv/sell/
 class Island extends Component {
   constructor(props) {
     super(props);
@@ -363,7 +363,7 @@ class Island extends Component {
       road.mousePressed(() => offen('road'))
       name.mousePressed(() => offen('new-name'))
       enable.mousePressed(() => offen('abilities'))
-      // mine.mousePressed(() => miner('mine'))
+      mine.mousePressed(() => miner('mine'))
       pray.mousePressed(() => prayer())
       transform.mousePressed(() => offen('transform'))
 
@@ -386,7 +386,7 @@ class Island extends Component {
       console.log('this is the transform value', i_value, currentRoom.room_id)
       if (i_value && currentRoom.room_id === 495) {
 
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/transmogrify/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/transmogrify/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -480,7 +480,7 @@ class Island extends Component {
 
       }
       else if (s_value === 'New' ) {
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/change_name/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -509,7 +509,7 @@ class Island extends Component {
 
     else if (s_value === 'Confirm') {
 
-      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/', {
+      await fetch('https://l-t-h.herokuapp.com/api/adv/change_name/', {
         method: 'POST', // or 'PUT'
         headers:{
           'Authorization': `Token ${TOKEN}`,
@@ -548,7 +548,7 @@ class Island extends Component {
       if (s_value === 'Carry') {
         console.log('Yes')
 
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/carry/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/carry/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -586,7 +586,7 @@ class Island extends Component {
 
       else if (s_value === 'Receive') {
 
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/receive/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/receive/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -622,7 +622,7 @@ class Island extends Component {
       console.log(String(final_value), 'final', JSON.stringify(r_value))
       final_value = final_value.replace(/\s/g, '');
       console.log(final_value, 'final', r_value)
-      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/dash/', {
+      await fetch('https://l-t-h.herokuapp.com/api/adv/dash/', {
         method: 'POST', // or 'PUT'
         headers:{
           'Authorization': `Token ${TOKEN}`,
@@ -689,7 +689,7 @@ class Island extends Component {
     let d_value = p.select('.direction-selection').value()
 
 
-    await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/fly/', {
+    await fetch('https://l-t-h.herokuapp.com/api/adv/fly/', {
       method: 'POST', // or 'PUT'
       headers:{
         'Authorization': `Token ${TOKEN}`,
@@ -738,7 +738,7 @@ class Island extends Component {
 
         console.log('inside prayer')
 
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/pray/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/pray/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -765,7 +765,7 @@ class Island extends Component {
 
       if (s_value === 'Take') {
 
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/take/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/take/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -805,7 +805,7 @@ class Island extends Component {
 
       else if (s_value === 'Drop') {
 
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/drop/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -843,7 +843,7 @@ class Island extends Component {
       }
 
     else if (s_value === 'Examine') {
-      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/', {
+      await fetch('https://l-t-h.herokuapp.com/api/adv/examine/', {
         method: 'POST', // or 'PUT'
         headers:{
           'Authorization': `Token ${TOKEN}`,
@@ -867,7 +867,7 @@ class Island extends Component {
     }
 
     else if (s_value === 'Wear') {
-      await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/wear/', {
+      await fetch('https://l-t-h.herokuapp.com/api/adv/wear/', {
         method: 'POST', // or 'PUT'
         headers:{
           'Authorization': `Token ${TOKEN}`,
@@ -905,7 +905,7 @@ class Island extends Component {
       }
 
       else if (s_value === 'Sell') {
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/sell/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -927,7 +927,7 @@ class Island extends Component {
       }
     
       else if (s_value === 'Confirm') {
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/sell/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -960,7 +960,7 @@ class Island extends Component {
       knownLocations = data 
       const config = {
         method: 'get',
-        url: 'https://schatzinsel.herokuapp.com/map',
+        url: 'https://l-t-h.herokuapp.com/api/adv/init',
         headers: {
           Authorization: `Token ${TOKEN}`
         }
@@ -977,44 +977,44 @@ class Island extends Component {
         r.classList.toggle("open")
         }
 
-      // async function miner(c) {
-      //     let mineB = document.getElementsByClassName('mine')[0]
-      //     minetext = document.getElementsByClassName('mining')[0]
+      async function miner(c) {
+          let mineB = document.getElementsByClassName('mine')[0]
+          minetext = document.getElementsByClassName('mining')[0]
 
-      //     let r = document.getElementsByClassName(c)[0]
-      //     r.classList.toggle("open")  
+          let r = document.getElementsByClassName(c)[0]
+          r.classList.toggle("open")  
 
-      //     if ((mineB.classList.contains('open') === false && mineB.style.backgroundColor === 'blue') || (mineB.classList.contains('open') === false && mineB.style.backgroundColor === 'gold' && currentRoom.room_id === 250)) {
-      //       r.classList.toggle("open")  
-      //     }
+          if ((mineB.classList.contains('open') === false && mineB.style.backgroundColor === 'blue') || (mineB.classList.contains('open') === false && mineB.style.backgroundColor === 'gold' && currentRoom.room_id === 250)) {
+            r.classList.toggle("open")  
+          }
        
-      //     if (mineB.classList.contains('open') === true || currentRoom.room_id === 250) {
-      //       console.log('it entered in')
+          if (mineB.classList.contains('open') === true || currentRoom.room_id === 250) {
+            console.log('it entered in')
 
-      //       if (currentRoom.room_id === 250) {
-      //         mineB.style.backgroundColor = "blue"
-      //         minetext.style.color = "white"
-      //         minetext.innerHTML = 'MINING...'
-      //         proof_of_work()
-      //       }
-      //       else  {
-      //         mineB.style.backgroundColor = "gold"
-      //         minetext.style.color = "black"
-      //         minetext.innerHTML = 'YOU CANNOT MINE IN THIS ROOM!'
-      //         await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/', {
-      //           method: 'GET', // or 'PUT'
-      //           headers:{
-      //             'Authorization': `Token ${TOKEN}`,
-      //           }
-      //         }).then(res => res.json())
-      //         .then(response => {
-      //           wait(3000)
-      //           minetext.innerHTML = response.messages[0]
-      //         })
-      //         .catch(error => console.error('Error:', error));
-      //       }
-      //     }
-      //     }
+            if (currentRoom.room_id === 250) {
+              mineB.style.backgroundColor = "blue"
+              minetext.style.color = "white"
+              minetext.innerHTML = 'MINING...'
+              proof_of_work()
+            }
+            else  {
+              mineB.style.backgroundColor = "gold"
+              minetext.style.color = "black"
+              minetext.innerHTML = 'YOU CANNOT MINE IN THIS ROOM!'
+              await fetch('https://l-t-h.herokuapp.com/api/bc/get_balance/', {
+                method: 'GET', // or 'PUT'
+                headers:{
+                  'Authorization': `Token ${TOKEN}`,
+                }
+              }).then(res => res.json())
+              .then(response => {
+                wait(3000)
+                minetext.innerHTML = response.messages[0]
+              })
+              .catch(error => console.error('Error:', error));
+            }
+          }
+          }
 
     async function stat() {
       let s = document.getElementsByClassName('player')[0]
@@ -1028,7 +1028,7 @@ class Island extends Component {
         pE = p.select('.pE')
         pSTRENGTH = p.select('.pSTRENGTH')
         pSPEED = p.select('.pSPEED')
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/status/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -1075,7 +1075,7 @@ class Island extends Component {
   
         let load;
   
-        await fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/', {
+        await fetch('https://l-t-h.herokuapp.com/api/adv/status/', {
           method: 'POST', // or 'PUT'
           headers:{
             'Authorization': `Token ${TOKEN}`,
@@ -1133,7 +1133,7 @@ class Island extends Component {
           rTI = p.select('.rTI');
           const config = {
               method: 'get',
-              url: 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/',
+              url: 'https://l-t-h.herokuapp.com/api/adv/init',
               headers: {
                 Authorization: `Token ${TOKEN}`
               }
@@ -1164,7 +1164,7 @@ class Island extends Component {
     function direction(d) {
       let c = document.getElementsByClassName('current')[0]
       c.classList.toggle("open")
-     fetch('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', {
+     fetch('https://l-t-h.herokuapp.com/api/adv/move/', {
       method: 'POST', // or 'PUT'
       body: JSON.stringify({direction: d}), // data can be `string` or {object}!
       headers:{
@@ -1174,91 +1174,91 @@ class Island extends Component {
     }).then(res => res.json())
     .then(response => {
       currentRoom = response
-      console.log('Arrr', response.cooldown)
+      console.log('Arrr', response)
       wait(response.cooldown*1000+1000)
       gotIt()
     })
     .catch(error => console.error('Error:', error));
 }
-// curl -X POST -H 'Authorization:`Token ${TOKEN}` -H "Content-Type: application/json" -d '{"name":"denise escobar"}' https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/
+// curl -X POST -H 'Authorization:`Token ${TOKEN}` -H "Content-Type: application/json" -d '{"name":"denise escobar"}' https://l-t-h.herokuapp.com/api/adv/examine/
 
 
-// async function proof_of_work() {
-//   let last_proof;
-//   let difficulty;
-//   let solution;
-//   let cooldown;
-//   minetext = document.getElementsByClassName('mining')[0]
+async function proof_of_work() {
+  let last_proof;
+  let difficulty;
+  let solution;
+  let cooldown;
+  minetext = document.getElementsByClassName('mining')[0]
 
-//   mining = true;
-//   p.redraw(1);
+  mining = true;
+  p.redraw(1);
 
-//   await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/last_proof/', {
-//     method: 'GET', // or 'PUT'
-//     headers:{
-//       'Authorization': `Token ${TOKEN}`,
-//     }
-//   }).then(res => res.json())
-//   .then(response => {
-//     last_proof = response.proof
-//     difficulty = response.difficulty
-//     cooldown = response.cooldown
-//   })
-//   .catch(error => console.error('Error:', error));
-//   // curl -X GET -H 'Authorization:`Token ${TOKEN}` https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
-//   let proof = 4
+  await fetch('https://l-t-h.herokuapp.com/api/bc/last_proof/', {
+    method: 'GET', // or 'PUT'
+    headers:{
+      'Authorization': `Token ${TOKEN}`,
+    }
+  }).then(res => res.json())
+  .then(response => {
+    last_proof = response.proof
+    difficulty = response.difficulty
+    cooldown = response.cooldown
+  })
+  .catch(error => console.error('Error:', error));
+  // curl -X GET -H 'Authorization:`Token ${TOKEN}` https://l-t-h.herokuapp.com/api/bc/get_balance/
+  let proof = 4
 
-//   while (valid_proof(last_proof, proof, difficulty) === false) {
-//     proof +=3
-//   }
+  while (valid_proof(last_proof, proof, difficulty) === false) {
+    proof +=3
+  }
 
-//   solution = proof
+  solution = proof
 
-//   console.log('s', solution, 'p', proof, 'l', last_proof, 'd', difficulty)
+  console.log('s', solution, 'p', proof, 'l', last_proof, 'd', difficulty)
 
-//   wait(5000)
+  wait(5000)
 
-//   await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/mine/', {
-//     method: 'POST', // or 'PUT'
-//     body: JSON.stringify({proof: solution}), // data can be `string` or {object}!
-//     headers:{
-//       'Authorization': `Token ${TOKEN}`,
-//     }
-//   }).then(res => res.json())
-//   .then(response => console.log(minetext.innerHTML = response.messages[0]))
-//   .catch(error => console.error('Error:', error));
+  await fetch('https://l-t-h.herokuapp.com/api/bc/mine/', {
+    method: 'POST', // or 'PUT'
+    body: JSON.stringify({proof: solution}), // data can be `string` or {object}!
+    headers:{
+      'Authorization': `Token ${TOKEN}`,
+    }
+  }).then(res => res.json())
+  .then(response => console.log(minetext.innerHTML = response.messages[0]))
+  .catch(error => console.error('Error:', error));
 
-//   wait(15000)
-//   await fetch('https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/', {
-//     method: 'GET', // or 'PUT'
-//     headers:{
-//       'Authorization': `Token ${TOKEN}`,
-//     }
-//   }).then(res => res.json())
-//   .then(response => {
-//     minetext.innerHTML = response.messages[0]
-//   })
-//   .catch(error => console.error('Error:', error));
-//   mining = false;
-//   p.redraw(1);
-// }
-// curl -X GET -H 'Authorization:`Token ${TOKEN}` https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/
+  wait(15000)
+  await fetch('https://l-t-h.herokuapp.com/api/bc/get_balance/', {
+    method: 'GET', // or 'PUT'
+    headers:{
+      'Authorization': `Token ${TOKEN}`,
+    }
+  }).then(res => res.json())
+  .then(response => {
+    minetext.innerHTML = response.messages[0]
+  })
+  .catch(error => console.error('Error:', error));
+  mining = false;
+  p.redraw(1);
+}
+// curl -X GET -H 'Authorization:`Token ${TOKEN}` https://l-t-h.herokuapp.com/api/bc/get_balance/
 
   
-// function valid_proof(last_proof, proof, proof_difficulty) {
-//   let difficulty = proof_difficulty;
-//   let guess = sha256(String(last_proof) + String(proof));
+function valid_proof(last_proof, proof, proof_difficulty) {
+  let difficulty = proof_difficulty;
+  let guess = sha256(String(last_proof) + String(proof));
 
 
-//   if (guess.startsWith("0".repeat(difficulty))) {
-//     return guess
-//   }
+  if (guess.startsWith("0".repeat(difficulty))) {
+    return guess
+  }
 
-//   else {
-//     return false
-//   }
+  else {
+    return false
+  }
 
-// }
+}
 
     p.draw = () => {
       p.background(bg);
@@ -1296,12 +1296,12 @@ class Island extends Component {
         previousRoom = currentRoom;
         direction("s");
       }
-      // else if (p.keyCode === p.ENTER && currentRoom.room_id === 250) {
-      //   miner('mine')
-      // }
-      // else if (p.keyCode === p.ENTER && currentRoom.room_id !== 250) {
-      //   miner('mine')
-      // }
+      else if (p.keyCode === p.ENTER && currentRoom.room_id === 250) {
+        miner('mine')
+      }
+      else if (p.keyCode === p.ENTER && currentRoom.room_id !== 250) {
+        miner('mine')
+      }
       else if (
         p.keyCode === p.UP_ARROW &&
         current[0]['exits']['n'] !== undefined
