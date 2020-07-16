@@ -734,7 +734,7 @@ class Island extends Component {
       r.classList.toggle("open")
 
       let prayer_status = p.select('.praying')
-      if ((r.classList.contains('open') && currentRoom.room_id === 461) || (r.classList.contains('open') && currentRoom.room_id === 499) || (r.classList.contains('open') && currentRoom.room_id === 22) ) {
+      // if ((r.classList.contains('open') && currentRoom.room_id === 461) || (r.classList.contains('open') && currentRoom.room_id === 499) || (r.classList.contains('open') && currentRoom.room_id === 22) ) {
 
         console.log('inside prayer')
 
@@ -746,17 +746,22 @@ class Island extends Component {
         }).then(res => res.json())
         .then(response => {
           console.log(response)
-          prayer_status.html(response.messages)
+          if (response.errors) {
+            prayer_status.html(response.errors[0])
+          }
+          else {
+            prayer_status.html(response.messages)
+          }
         }  
           )
         .catch(error => console.error('Error:', error));
 
 
-      }
+      // }
 
-      else {
-        prayer_status.html("YOU MUST FIND THE SHRINE TO PRAY!")  
-      }
+      // else {
+      //   prayer_status.html("YOU MUST FIND THE SHRINE TO PRAY!")  
+      // }
     }
     async function roading() {
       let s_value = document.getElementsByClassName('road-selection')[0].value
