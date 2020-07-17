@@ -77,8 +77,8 @@ class Island extends Component {
     super(props);
     this.state = {
       token: this.props.location.state.token,
-      currentRoom: {room_id: 22222},
-      previousRoom: '...',
+      currentRoom: "",
+      previousRoom: "",
       open: false
     };
   }
@@ -284,6 +284,10 @@ class Island extends Component {
     let dom2;
     let dom3;
     let dom4;
+    let dom5;
+    let dom6;
+    let dom7;
+
     let previousRoom;
     let knownLocations;
   let currentRoom;
@@ -341,6 +345,10 @@ class Island extends Component {
       dom2 = p.select('.goodbye');
       dom3 = p.select('.inventory')
       dom4 = p.select('.current')
+      dom5 = p.select('.previous')
+      dom6 = p.select('.instruct-button')
+      dom7 = p.select('.login-logo-group')
+
       road = p.select('.road-b')
       shop = p.select('.shop-b')
       name = p.select('.name-b')
@@ -378,6 +386,21 @@ class Island extends Component {
       dom3.mousePressed(inv)
       dom4.mousePressed(gotIt)
       previousRoom = '...'
+      dom.hide()
+      dom2.hide()
+      dom3.hide()
+      dom4.hide()
+      dom5.hide()
+      dom6.hide()
+      dom7.hide()
+
+      road.hide()
+      shop.hide()
+      name.hide()
+      mine.hide()
+      pray.hide()
+      enable.hide()
+      transform.hide()
     };
 
     async function transmorph() {
@@ -1270,8 +1293,21 @@ function valid_proof(last_proof, proof, proof_difficulty) {
 
       if (currentRoom !== undefined)
       {
+        dom.show()
+        dom2.show()
+        dom3.show()
+        dom4.show()
+        dom5.show()
+        dom6.show()
+        dom7.show()
 
-
+        road.show()
+        shop.show()
+        name.show()
+        mine.show()
+        pray.show()
+        enable.show()
+        transform.show()
         connections();
         treasureMap();
         words();
@@ -1282,8 +1318,35 @@ function valid_proof(last_proof, proof, proof_difficulty) {
           dom2.html(`Previous Room ID:`);
         }
       }
- 
 
+      else {
+              dom.hide()
+              dom2.hide()
+              dom3.hide()
+              dom4.hide()
+              dom5.hide()
+              dom6.hide()
+              dom7.hide()
+
+              road.hide()
+              shop.hide()
+              name.hide()
+              mine.hide()
+              pray.hide()
+              enable.hide()
+              transform.hide()
+              p.textSize(200);
+              p.text(`LOADING...`, 100, 500);
+
+      }
+ 
+      road = p.select('.road-b')
+      shop = p.select('.shop-b')
+      name = p.select('.name-b')
+      mine = p.select('.mine-b')
+      pray = p.select('.pray-b')
+      enable = p.select('.abilities-b')
+      transform = p.select('.transform-b')
 
       // p.noStroke();
       // p.textSize(40);
@@ -1348,7 +1411,7 @@ function valid_proof(last_proof, proof, proof_difficulty) {
   render() {
     return (
       <div className='game'>
-        <NavLink to={{pathname: `/`}}>
+        <NavLink className='login-logo-group'to={{pathname: `/`}}>
         <img className='login-logo' src={schatzinsel} alt="logo" />
         <h6>Logout</h6>
         </NavLink>
