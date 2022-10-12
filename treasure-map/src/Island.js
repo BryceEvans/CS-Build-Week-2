@@ -334,7 +334,7 @@ class Island extends Component {
   p.preload = () => {
     TOKEN = document.getElementsByClassName("map")[0].getAttribute('token')
 
-      p.loadJSON('https://schatzinsel.herokuapp.com/map', getInit);
+      p.loadJSON('https://schatzinsel.onrender.com/api/map', getInit);
       bg = p.loadImage(island, 1260, 1600)
   }
     p.setup = () => {
